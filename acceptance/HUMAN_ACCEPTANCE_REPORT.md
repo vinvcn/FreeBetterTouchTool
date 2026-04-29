@@ -30,6 +30,23 @@ Date:
 ## Defects
 
 
+## Detailed routing safety matrix
+
+Reported by owner on 2026-04-29: all required routing safety cases passed on real local macOS usage.
+
+| # | Scenario | Result |
+|---|---|---|
+| 1 | Non-Chrome + Option + horizontal scroll => pass-through | PASS |
+| 2 | Chrome + vertical scroll => pass-through | PASS |
+| 3 | Chrome + horizontal scroll + no modifier => pass-through | PASS |
+| 4 | Chrome + horizontal scroll + Command => pass-through | PASS |
+| 5 | Chrome + horizontal scroll + Shift => pass-through | PASS |
+| 6 | Chrome + horizontal scroll + Control => pass-through | PASS |
+| 7 | Chrome + horizontal scroll + Option+Command => pass-through | PASS |
+| 8 | Chrome + horizontal scroll + Option-only + positive dx => zoom-in and swallow | PASS |
+| 9 | Chrome + horizontal scroll + Option-only + negative dx => zoom-out and swallow | PASS |
+| 10 | Disable router => pass-through | PASS |
+
 ## Signoff
 
 I confirm this build was installed and tested on my own Mac with my real MX Master + Logi Options+ + Chrome setup.

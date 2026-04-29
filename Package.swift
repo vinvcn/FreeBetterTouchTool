@@ -34,7 +34,7 @@ let package = Package(
         ),
         .testTarget(
             name: "ChromeWheelRouterCoreTests",
-            dependencies: ["ChromeWheelRouterCore"]
+            dependencies: ["ChromeWheelRouterCore", "ChromeWheelRouterMac"]
         )
     ]
 )

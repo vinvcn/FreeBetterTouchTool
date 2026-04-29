@@ -7,17 +7,20 @@ public final class CGEventTapService {
     private let router: Router
     private let mode: EventTapMode
     private let isEnabled: () -> Bool
+    private let keyboardInjector: KeyboardInjecting
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
 
     public init(
         router: Router = Router(),
         mode: EventTapMode,
-        isEnabled: @escaping () -> Bool = { true }
+        isEnabled: @escaping () -> Bool = { true },
+        keyboardInjector: KeyboardInjecting = CGKeyboardInjector()
     ) {
         self.router = router
         self.mode = mode
         self.isEnabled = isEnabled
+        self.keyboardInjector = keyboardInjector
     }
 
     public func start() -> Bool {
@@ -70,29 +73,41 @@ public final class CGEventTapService {
             routerEnabled: isEnabled()
         )
         let decision = router.decide(model)
+        let action = EventAction.forMode(mode, decision: decision)
 
-        log(decision: decision, model: model)
+        log(decision: decision, model: model, action: action)
 
-        // EXEC-03 safety invariant: return original event in all modes.
-        return Unmanaged.passUnretained(event)
+        guard action == .injectAndSwallow else {
+            return Unmanaged.passUnretained(event)
+        }
+
+        let injected: Bool
+        switch decision {
+        case .zoomInAndSwallow:
+            injected = keyboardInjector.sendChromeZoomIn()
+        case .zoomOutAndSwallow:
+            injected = keyboardInjector.sendChromeZoomOut()
+        case .passThrough:
+            injected = false
+        }
+
+        return injected ? nil : Unmanaged.passUnretained(event)
     }
 
-    private func log(decision: RouteDecision, model: ScrollEventModel) {
-        switch mode {
-        case .listenOnly:
-            print("mode=listen-only observed app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) modifiers=\(model.modifiers) decision=\(decision)")
-        case .dryRun:
-            print("mode=dry-run classified app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) decision=\(decision) action=pass-through")
-        case .active:
-            print("mode=active classified app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) decision=\(decision) action=pass-through-exec-03")
-        }
+    private func log(decision: RouteDecision, model: ScrollEventModel, action: EventAction) {
+        print("mode=\(mode.rawValue) app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) decision=\(decision) action=\(action)")
     }
 }
 #else
 import ChromeWheelRouterCore
 
 public final class CGEventTapService {
-    public init(router: Router = Router(), mode: EventTapMode, isEnabled: @escaping () -> Bool = { true }) {}
+    public init(
+        router: Router = Router(),
+        mode: EventTapMode,
+        isEnabled: @escaping () -> Bool = { true },
+        keyboardInjector: KeyboardInjecting = CGKeyboardInjector()
+    ) {}
 
     public func start() -> Bool {
         false

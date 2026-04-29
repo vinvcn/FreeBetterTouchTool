@@ -11,6 +11,7 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     private var enabledMenuItem: NSMenuItem!
     private var dryRunMenuItem: NSMenuItem!
     private var statusMenuItem: NSMenuItem!
+    private var permissionMenuItem: NSMenuItem!
 
     private var userEnabled = false
     private var dryRunEnabled = false
@@ -36,6 +37,10 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         statusMenuItem.isEnabled = false
         statusMenu.addItem(statusMenuItem)
 
+        permissionMenuItem = NSMenuItem(title: "Permissions: Checking...", action: nil, keyEquivalent: "")
+        permissionMenuItem.isEnabled = false
+        statusMenu.addItem(permissionMenuItem)
+
         statusMenu.addItem(.separator())
 
         enabledMenuItem = NSMenuItem(title: "Enable", action: #selector(toggleEnabled), keyEquivalent: "e")
@@ -48,6 +53,14 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         statusMenu.addItem(dryRunMenuItem)
 
         statusMenu.addItem(.separator())
+
+        let openAccessibilityItem = NSMenuItem(title: "Open Accessibility Settings", action: #selector(openAccessibilitySettings), keyEquivalent: "a")
+        openAccessibilityItem.target = self
+        statusMenu.addItem(openAccessibilityItem)
+
+        let openInputMonitoringItem = NSMenuItem(title: "Open Input Monitoring Settings", action: #selector(openInputMonitoringSettings), keyEquivalent: "i")
+        openInputMonitoringItem.target = self
+        statusMenu.addItem(openInputMonitoringItem)
 
         let openLogsItem = NSMenuItem(title: "Open Logs", action: #selector(openLogs), keyEquivalent: "l")
         openLogsItem.target = self
@@ -75,6 +88,16 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     }
 
     @objc
+    private func openAccessibilitySettings() {
+        openPrivacySettingsPane(anchor: "Privacy_Accessibility")
+    }
+
+    @objc
+    private func openInputMonitoringSettings() {
+        openPrivacySettingsPane(anchor: "Privacy_ListenEvent")
+    }
+
+    @objc
     private func openLogs() {
         let consoleURL = URL(fileURLWithPath: "/System/Applications/Utilities/Console.app")
         NSWorkspace.shared.openApplication(at: consoleURL, configuration: NSWorkspace.OpenConfiguration()) { _, _ in }
@@ -84,6 +107,16 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     private func quitApp() {
         stopTapService()
         NSApp.terminate(nil)
+    }
+
+    private func openPrivacySettingsPane(anchor: String) {
+        guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?") else {
+            return
+        }
+        let fullURL = URL(string: "\(url.absoluteString)\(anchor)")
+        if let fullURL {
+            NSWorkspace.shared.open(fullURL)
+        }
     }
 
     private func permissionsSatisfied() -> Bool {
@@ -125,10 +158,12 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         enabledMenuItem.title = userEnabled ? "Disable" : "Enable"
         dryRunMenuItem.state = dryRunEnabled ? .on : .off
 
+        permissionMenuItem.title = hasPermissions ? "Permissions: Granted" : "Permissions: Missing"
+
         if running {
             statusMenuItem.title = dryRunEnabled ? "Status: Running (Dry Run)" : "Status: Running"
         } else if !hasPermissions {
-            statusMenuItem.title = "Status: Missing Accessibility/Input Monitoring"
+            statusMenuItem.title = "Status: Missing Permissions"
         } else {
             statusMenuItem.title = "Status: Disabled"
         }

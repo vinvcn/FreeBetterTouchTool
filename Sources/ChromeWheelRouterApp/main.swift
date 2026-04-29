@@ -4,6 +4,17 @@ import ApplicationServices
 import ChromeWheelRouterMac
 
 @main
+struct ChromeWheelRouterMain {
+    private static let appDelegate = ChromeWheelRouterApp()
+
+    static func main() {
+        let app = NSApplication.shared
+        app.setActivationPolicy(.accessory)
+        app.delegate = appDelegate
+        app.run()
+    }
+}
+
 final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private var statusMenu: NSMenu!
@@ -17,6 +28,7 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     private var dryRunEnabled = false
     private var tapService: CGEventTapService?
     private var statusPollTimer: Timer?
+    private var startupHeartbeatTimer: Timer?
 
     private lazy var appSupportDirectory: URL = {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
@@ -33,22 +45,27 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.accessory)
         ensureAppSupportDirectory()
+        appendLog("Application launched. bundlePath=\(Bundle.main.bundlePath)")
         buildMenuBarUI()
+        appendLog("Status item created.")
         startStatusPolling()
+        startStartupHeartbeat()
         reconcileRuntime()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
         statusPollTimer?.invalidate()
         statusPollTimer = nil
+        startupHeartbeatTimer?.invalidate()
+        startupHeartbeatTimer = nil
         stopTapService()
     }
 
     private func buildMenuBarUI() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem.button?.title = "CWR"
+        statusItem.button?.toolTip = "ChromeWheelRouter"
 
         statusMenu = NSMenu()
 
@@ -81,6 +98,14 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         openInputMonitoringItem.target = self
         statusMenu.addItem(openInputMonitoringItem)
 
+        let checkPermissionsItem = NSMenuItem(title: "Check Permissions", action: #selector(checkPermissions), keyEquivalent: "k")
+        checkPermissionsItem.target = self
+        statusMenu.addItem(checkPermissionsItem)
+
+        let requestPermissionPromptsItem = NSMenuItem(title: "Request Permission Prompts", action: #selector(requestPermissionPrompts), keyEquivalent: "p")
+        requestPermissionPromptsItem.target = self
+        statusMenu.addItem(requestPermissionPromptsItem)
+
         let openLogsItem = NSMenuItem(title: "Open Logs", action: #selector(openLogs), keyEquivalent: "l")
         openLogsItem.target = self
         statusMenu.addItem(openLogsItem)
@@ -91,6 +116,7 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         quitItem.target = self
         statusMenu.addItem(quitItem)
 
+        statusMenu.delegate = self
         statusItem.menu = statusMenu
     }
 
@@ -128,9 +154,68 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         NSApp.terminate(nil)
     }
 
+
+    @objc
+    private func requestPermissionPrompts() {
+        requestPermissions(forcePrompt: true)
+        reconcileRuntime()
+    }
+
+    @objc
+    private func checkPermissions() {
+        let accessibilityGranted = AXIsProcessTrusted()
+        let inputMonitoringGranted = CGPreflightListenEventAccess()
+        let allGranted = accessibilityGranted && inputMonitoringGranted
+
+        reconcileRuntime()
+        appendLog(
+            "Permission check: accessibility=\(accessibilityGranted) inputMonitoring=\(inputMonitoringGranted) allGranted=\(allGranted)."
+        )
+        showPermissionCheckResult(
+            accessibilityGranted: accessibilityGranted,
+            inputMonitoringGranted: inputMonitoringGranted,
+            allGranted: allGranted
+        )
+    }
+
+    private func requestPermissions(forcePrompt: Bool) {
+        let accessibilityPromptOptions = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: forcePrompt] as CFDictionary
+        _ = AXIsProcessTrustedWithOptions(accessibilityPromptOptions)
+        _ = CGRequestListenEventAccess()
+        appendLog("Requested Accessibility/Input Monitoring permission prompts.")
+    }
+
     private func startStatusPolling() {
         statusPollTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.reconcileRuntime()
+        }
+    }
+
+    private func showPermissionCheckResult(
+        accessibilityGranted: Bool,
+        inputMonitoringGranted: Bool,
+        allGranted: Bool
+    ) {
+        let alert = NSAlert()
+        alert.messageText = allGranted ? "Permissions Granted" : "Permissions Missing"
+        alert.informativeText = """
+        Accessibility: \(accessibilityGranted ? "Granted" : "Missing")
+        Input Monitoring: \(inputMonitoringGranted ? "Granted" : "Missing")
+
+        \(allGranted ? "ChromeWheelRouter has the permissions needed to run its scroll routing functionality." : "ChromeWheelRouter will stay disabled until both permissions are granted.")
+        """
+        alert.alertStyle = allGranted ? .informational : .warning
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+    }
+
+    private func startStartupHeartbeat() {
+        startupHeartbeatTimer?.invalidate()
+        startupHeartbeatTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { [weak self] _ in
+            guard let self else {
+                return
+            }
+            self.appendLog("Application still running. permissionsSatisfied=\(self.permissionsSatisfied())")
         }
     }
 
@@ -247,6 +332,13 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         } catch {
             fputs("Failed to append runtime log: \(error)\n", stderr)
         }
+    }
+}
+
+extension ChromeWheelRouterApp: NSMenuDelegate {
+    func menuWillOpen(_ menu: NSMenu) {
+        appendLog("Status menu will open.")
+        reconcileRuntime()
     }
 }
 #else

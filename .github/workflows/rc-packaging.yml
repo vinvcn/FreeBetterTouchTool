@@ -1,0 +1,36 @@
+name: RC Packaging
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/package_rc.sh'
+      - '.github/workflows/rc-packaging.yml'
+      - 'Package.swift'
+      - 'Sources/**'
+      - 'Tests/**'
+
+jobs:
+  package-rc:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build RC package
+        run: ./scripts/package_rc.sh
+
+      - name: Verify RC artifact set
+        run: |
+          test -f dist/ChromeWheelRouter-v0.1.0-rc1.dmg
+          test -f dist/SHA256SUMS
+          test -f dist/build_manifest.json
+          test -f dist/test_report.txt
+          test -f dist/static_safety_report.txt
+          python3 -c "import json, pathlib; m=json.loads(pathlib.Path('dist/build_manifest.json').read_text()); assert m['packaging_status']=='created', m; assert m['test_status']=='pass', m; assert m['static_safety_status']=='pass', m; print('manifest OK')"
+
+      - name: Upload RC dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChromeWheelRouter-v0.1.0-rc1-dist
+          path: dist/
+          if-no-files-found: error

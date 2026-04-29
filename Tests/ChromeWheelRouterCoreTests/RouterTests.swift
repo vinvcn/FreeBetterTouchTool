@@ -70,7 +70,7 @@ final class RouterTests: XCTestCase {
         XCTAssertEqual(router.decide(event), .passThrough)
     }
 
-    func testChromeHorizontalControlPassesThrough() {
+    func testChromeHorizontalControlPositiveDeltaSwitchesToNextTabAndSwallows() {
         let event = ScrollEventModel(
             frontmostBundleID: "com.google.Chrome",
             horizontalDelta: 1,
@@ -78,7 +78,18 @@ final class RouterTests: XCTestCase {
             modifiers: [.control]
         )
 
-        XCTAssertEqual(router.decide(event), .passThrough)
+        XCTAssertEqual(router.decide(event), .nextTabAndSwallow)
+    }
+
+    func testChromeHorizontalControlNegativeDeltaSwitchesToPreviousTabAndSwallows() {
+        let event = ScrollEventModel(
+            frontmostBundleID: "com.google.Chrome",
+            horizontalDelta: -1,
+            verticalDelta: 0,
+            modifiers: [.control]
+        )
+
+        XCTAssertEqual(router.decide(event), .previousTabAndSwallow)
     }
 
     func testChromeHorizontalOptionCommandPassesThrough() {
@@ -87,6 +98,17 @@ final class RouterTests: XCTestCase {
             horizontalDelta: 1,
             verticalDelta: 0,
             modifiers: [.option, .command]
+        )
+
+        XCTAssertEqual(router.decide(event), .passThrough)
+    }
+
+    func testChromeHorizontalControlOptionPassesThrough() {
+        let event = ScrollEventModel(
+            frontmostBundleID: "com.google.Chrome",
+            horizontalDelta: 1,
+            verticalDelta: 0,
+            modifiers: [.control, .option]
         )
 
         XCTAssertEqual(router.decide(event), .passThrough)
@@ -119,7 +141,7 @@ final class RouterTests: XCTestCase {
             frontmostBundleID: "com.google.Chrome",
             horizontalDelta: 1,
             verticalDelta: 0,
-            modifiers: [.option],
+            modifiers: [.control],
             routerEnabled: false
         )
 

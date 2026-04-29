@@ -7,8 +7,9 @@ A small macOS utility project scaffold for building a safe Chrome-only mouse eve
 When Google Chrome is frontmost:
 
 - `Option + horizontal scroll` => Chrome page zoom
+- `Control + horizontal scroll` => Chrome tab switching
 - bare horizontal scroll => pass through untouched, so Logi Options+ can keep handling it
-- everything outside the exact MVP rule => pass through untouched
+- everything outside the exact gesture rules => pass through untouched
 
 This repo is intentionally scoped. It is **not** a BetterTouchTool clone.
 

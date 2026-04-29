@@ -13,4 +13,8 @@ public struct ModifierState: OptionSet, Sendable, Equatable {
     public var isOptionOnly: Bool {
         self == [.option]
     }
+
+    public var isControlOnly: Bool {
+        self == [.control]
+    }
 }

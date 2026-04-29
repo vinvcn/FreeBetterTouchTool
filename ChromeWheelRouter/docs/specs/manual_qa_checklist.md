@@ -16,6 +16,9 @@ Use this on a real Mac before release.
 - [ ] Chrome + bare horizontal scroll still uses Logi Options+ behavior.
 - [ ] Chrome + Option + horizontal scroll right zooms in.
 - [ ] Chrome + Option + horizontal scroll left zooms out.
+- [ ] Chrome + Control + horizontal scroll right switches to the next tab.
+- [ ] Chrome + Control + horizontal scroll left switches to the previous tab.
+- [ ] Chrome + Option + Control + horizontal scroll passes through.
 - [ ] Chrome + Command + horizontal scroll does not trigger this app.
 - [ ] Chrome + Shift + horizontal scroll does not trigger this app.
 - [ ] Finder + Option + horizontal scroll does not zoom.

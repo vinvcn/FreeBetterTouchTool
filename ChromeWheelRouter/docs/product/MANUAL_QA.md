@@ -15,11 +15,13 @@ Codex Cloud cannot validate physical input-device behavior. Run this on a real M
 3. Chrome + horizontal scroll + no modifier => pass-through.
 4. Chrome + horizontal scroll + Command => pass-through.
 5. Chrome + horizontal scroll + Shift => pass-through.
-6. Chrome + horizontal scroll + Control => pass-through.
-7. Chrome + horizontal scroll + Option+Command => pass-through.
-8. Chrome + horizontal scroll + Option-only + positive dx => zoom-in and swallow.
-9. Chrome + horizontal scroll + Option-only + negative dx => zoom-out and swallow.
-10. Disable router => pass-through.
+6. Chrome + horizontal scroll + Control-only + positive dx => next tab and swallow.
+7. Chrome + horizontal scroll + Control-only + negative dx => previous tab and swallow.
+8. Chrome + horizontal scroll + Option+Command => pass-through.
+9. Chrome + horizontal scroll + Option+Control => pass-through.
+10. Chrome + horizontal scroll + Option-only + positive dx => zoom-in and swallow.
+11. Chrome + horizontal scroll + Option-only + negative dx => zoom-out and swallow.
+12. Disable router => pass-through.
 
 ## Acceptance recording
 

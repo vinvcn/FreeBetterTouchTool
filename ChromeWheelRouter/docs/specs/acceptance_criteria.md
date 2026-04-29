@@ -4,6 +4,9 @@
 
 - Chrome + Option + horizontal scroll right => zoom in.
 - Chrome + Option + horizontal scroll left => zoom out.
+- Chrome + Control + horizontal scroll right => next tab.
+- Chrome + Control + horizontal scroll left => previous tab.
+- Chrome + Option + Control + horizontal scroll => pass through.
 - Chrome + bare horizontal scroll => pass through.
 - Non-Chrome + horizontal scroll => pass through.
 - Vertical scroll => pass through.

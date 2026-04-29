@@ -5,6 +5,8 @@ import CoreGraphics
 public protocol KeyboardInjecting: Sendable {
     func sendChromeZoomIn() -> Bool
     func sendChromeZoomOut() -> Bool
+    func sendChromeNextTab() -> Bool
+    func sendChromePreviousTab() -> Bool
 }
 
 public struct CGKeyboardInjector: KeyboardInjecting {
@@ -18,7 +20,19 @@ public struct CGKeyboardInjector: KeyboardInjecting {
         sendCommandShortcut(keyCode: 27)
     }
 
+    public func sendChromeNextTab() -> Bool {
+        sendShortcut(keyCode: 48, flags: .maskControl)
+    }
+
+    public func sendChromePreviousTab() -> Bool {
+        sendShortcut(keyCode: 48, flags: [.maskControl, .maskShift])
+    }
+
     private func sendCommandShortcut(keyCode: CGKeyCode) -> Bool {
+        sendShortcut(keyCode: keyCode, flags: .maskCommand)
+    }
+
+    private func sendShortcut(keyCode: CGKeyCode, flags: CGEventFlags) -> Bool {
         guard
             let source = CGEventSource(stateID: .combinedSessionState),
             let keyPress = CGEvent(keyboardEventSource: source, virtualKey: keyCode, keyDown: true),
@@ -27,8 +41,8 @@ public struct CGKeyboardInjector: KeyboardInjecting {
             return false
         }
 
-        keyPress.flags = .maskCommand
-        keyRelease.flags = .maskCommand
+        keyPress.flags = flags
+        keyRelease.flags = flags
         keyPress.post(tap: .cghidEventTap)
         keyRelease.post(tap: .cghidEventTap)
         return true
@@ -40,6 +54,8 @@ import Foundation
 public protocol KeyboardInjecting: Sendable {
     func sendChromeZoomIn() -> Bool
     func sendChromeZoomOut() -> Bool
+    func sendChromeNextTab() -> Bool
+    func sendChromePreviousTab() -> Bool
 }
 
 public struct CGKeyboardInjector: KeyboardInjecting {
@@ -48,5 +64,9 @@ public struct CGKeyboardInjector: KeyboardInjecting {
     public func sendChromeZoomIn() -> Bool { false }
 
     public func sendChromeZoomOut() -> Bool { false }
+
+    public func sendChromeNextTab() -> Bool { false }
+
+    public func sendChromePreviousTab() -> Bool { false }
 }
 #endif

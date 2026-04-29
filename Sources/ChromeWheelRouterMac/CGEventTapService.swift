@@ -3,11 +3,18 @@ import AppKit
 import CoreGraphics
 import ChromeWheelRouterCore
 
+public enum EventTapDisableReason: Sendable {
+    case timeout
+    case userInput
+}
+
 public final class CGEventTapService {
     private let router: Router
     private let mode: EventTapMode
     private let isEnabled: () -> Bool
     private let keyboardInjector: KeyboardInjecting
+    private let onTapDisabled: ((EventTapDisableReason) -> Void)?
+    private let logger: (String) -> Void
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
 
@@ -15,12 +22,16 @@ public final class CGEventTapService {
         router: Router = Router(),
         mode: EventTapMode,
         isEnabled: @escaping () -> Bool = { true },
-        keyboardInjector: KeyboardInjecting = CGKeyboardInjector()
+        keyboardInjector: KeyboardInjecting = CGKeyboardInjector(),
+        onTapDisabled: ((EventTapDisableReason) -> Void)? = nil,
+        logger: @escaping (String) -> Void = { print($0) }
     ) {
         self.router = router
         self.mode = mode
         self.isEnabled = isEnabled
         self.keyboardInjector = keyboardInjector
+        self.onTapDisabled = onTapDisabled
+        self.logger = logger
     }
 
     public func start() -> Bool {
@@ -73,8 +84,14 @@ public final class CGEventTapService {
 
     private func handleEvent(proxy: CGEventTapProxy, type: CGEventType, event: CGEvent) -> Unmanaged<CGEvent>? {
         if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
-            if let tap = eventTap {
+            if isEnabled(), let tap = eventTap {
                 CGEvent.tapEnable(tap: tap, enable: true)
+            }
+
+            if type == .tapDisabledByTimeout {
+                onTapDisabled?(.timeout)
+            } else {
+                onTapDisabled?(.userInput)
             }
             return Unmanaged.passUnretained(event)
         }
@@ -112,18 +129,25 @@ public final class CGEventTapService {
     }
 
     private func log(decision: RouteDecision, model: ScrollEventModel, action: EventAction) {
-        print("mode=\(mode.rawValue) app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) decision=\(decision) action=\(action)")
+        logger("mode=\(mode.rawValue) app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) decision=\(decision) action=\(action)")
     }
 }
 #else
 import ChromeWheelRouterCore
+
+public enum EventTapDisableReason: Sendable {
+    case timeout
+    case userInput
+}
 
 public final class CGEventTapService {
     public init(
         router: Router = Router(),
         mode: EventTapMode,
         isEnabled: @escaping () -> Bool = { true },
-        keyboardInjector: KeyboardInjecting = CGKeyboardInjector()
+        keyboardInjector: KeyboardInjecting = CGKeyboardInjector(),
+        onTapDisabled: ((EventTapDisableReason) -> Void)? = nil,
+        logger: @escaping (String) -> Void = { _ in }
     ) {}
 
     public func start() -> Bool {

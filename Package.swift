@@ -18,6 +18,10 @@ let package = Package(
         .executable(
             name: "ChromeWheelRouterCLI",
             targets: ["ChromeWheelRouterCLI"]
+        ),
+        .executable(
+            name: "ChromeWheelRouterApp",
+            targets: ["ChromeWheelRouterApp"]
         )
     ],
     targets: [
@@ -31,6 +35,10 @@ let package = Package(
         .executableTarget(
             name: "ChromeWheelRouterCLI",
             dependencies: ["ChromeWheelRouterCore", "ChromeWheelRouterMac"]
+        ),
+        .executableTarget(
+            name: "ChromeWheelRouterApp",
+            dependencies: ["ChromeWheelRouterMac"]
         ),
         .testTarget(
             name: "ChromeWheelRouterCoreTests",

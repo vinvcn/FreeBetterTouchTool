@@ -24,6 +24,10 @@ public final class CGEventTapService {
     }
 
     public func start() -> Bool {
+        guard eventTap == nil else {
+            return true
+        }
+
         let mask = CGEventMask(1 << CGEventType.scrollWheel.rawValue)
         let callback: CGEventTapCallBack = { proxy, type, event, context in
             guard let context else { return Unmanaged.passUnretained(event) }
@@ -48,6 +52,19 @@ public final class CGEventTapService {
         CFRunLoopAddSource(CFRunLoopGetCurrent(), source, .commonModes)
         CGEvent.tapEnable(tap: tap, enable: true)
         return true
+    }
+
+    public func stop() {
+        guard let tap = eventTap else {
+            return
+        }
+
+        CGEvent.tapEnable(tap: tap, enable: false)
+        if let source = runLoopSource {
+            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, .commonModes)
+        }
+        runLoopSource = nil
+        eventTap = nil
     }
 
     public func run() {
@@ -112,6 +129,8 @@ public final class CGEventTapService {
     public func start() -> Bool {
         false
     }
+
+    public func stop() {}
 
     public func run() {}
 }

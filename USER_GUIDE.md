@@ -8,6 +8,7 @@ In Chrome:
 
 - Bare horizontal wheel: unchanged; Logi Options+ can keep handling it.
 - Option + horizontal wheel: page zoom.
+- Control + horizontal wheel: switch to the previous or next tab.
 
 Outside Chrome:
 

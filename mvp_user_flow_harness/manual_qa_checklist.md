@@ -41,7 +41,22 @@ Chrome page zooms.
 Existing Logi tab switching should not also fire.
 ```
 
-### 3. Non-Chrome apps
+### 3. Chrome Control + horizontal wheel
+
+Action:
+
+```text
+Chrome frontmost → hold Control → horizontal wheel
+```
+
+Expected:
+
+```text
+Chrome switches to the previous or next tab.
+Page zoom should not also fire.
+```
+
+### 4. Non-Chrome apps
 
 Action:
 
@@ -56,7 +71,7 @@ No Chrome zoom shortcut is injected.
 No visible effect from ChromeWheelRouter.
 ```
 
-### 4. Disable
+### 5. Disable
 
 Action:
 
@@ -70,7 +85,7 @@ Expected:
 All behavior returns to Logi Options+ / system default.
 ```
 
-### 5. Quit
+### 6. Quit
 
 Action:
 

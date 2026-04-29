@@ -2,4 +2,6 @@ public enum RouteDecision: Sendable, Equatable {
     case passThrough
     case zoomInAndSwallow
     case zoomOutAndSwallow
+    case nextTabAndSwallow
+    case previousTabAndSwallow
 }

@@ -10,6 +10,7 @@ The user wants Chrome horizontal scrolling to keep its existing Logi Options+ be
 
 - bare horizontal scroll: leave existing Logi Options+ behavior untouched
 - Option + horizontal scroll: zoom Chrome page
+- Control + horizontal scroll: switch Chrome tabs
 
 The tool must not destabilize macOS or interfere with other apps.
 
@@ -21,13 +22,20 @@ Build it.
 
 Only Chrome.
 
-Only one exact interception rule:
+Only these exact interception rules:
 
 ```text
 Chrome frontmost
 + horizontal scroll
 + Option is the only modifier
 => send Chrome zoom shortcut and swallow original scroll event
+```
+
+```text
+Chrome frontmost
++ horizontal scroll
++ Control is the only modifier
+=> send Chrome tab shortcut and swallow original scroll event
 ```
 
 Everything else passes through unchanged.

@@ -18,10 +18,14 @@ public struct Router: Sendable {
             return .passThrough
         }
 
-        guard event.modifiers.isOptionOnly else {
-            return .passThrough
+        if event.modifiers.isOptionOnly {
+            return event.horizontalDelta > 0 ? .zoomInAndSwallow : .zoomOutAndSwallow
         }
 
-        return event.horizontalDelta > 0 ? .zoomInAndSwallow : .zoomOutAndSwallow
+        if event.modifiers.isControlOnly {
+            return event.horizontalDelta > 0 ? .nextTabAndSwallow : .previousTabAndSwallow
+        }
+
+        return .passThrough
     }
 }

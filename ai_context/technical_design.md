@@ -7,7 +7,7 @@ CGEventTapService
   -> translates CGEvent scrollWheel into ScrollEventModel
   -> calls ChromeWheelRouterCore.Router.decide(...)
   -> pass-through: returns original event
-  -> zoom: injects Chrome shortcut and returns nil
+  -> zoom/tab switch: injects Chrome shortcut and returns nil
 ```
 
 ## Core routing model
@@ -31,6 +31,8 @@ Output:
 - passThrough
 - zoomInAndSwallow
 - zoomOutAndSwallow
+- nextTabAndSwallow
+- previousTabAndSwallow
 
 ## macOS adapter
 
@@ -80,6 +82,18 @@ Chrome zoom out:
 
 ```text
 Command + -
+```
+
+Chrome next tab:
+
+```text
+Control + Tab
+```
+
+Chrome previous tab:
+
+```text
+Control + Shift + Tab
 ```
 
 ## Failure behavior

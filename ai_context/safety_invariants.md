@@ -11,11 +11,18 @@ These are non-negotiable.
 
 ## Matching scope
 
-Only this event may be swallowed:
+Only these events may be swallowed:
 
 ```text
 Chrome bundle ID
 + Option-only modifier
++ horizontalDelta != 0
++ app enabled
+```
+
+```text
+Chrome bundle ID
++ Control-only modifier
 + horizontalDelta != 0
 + app enabled
 ```

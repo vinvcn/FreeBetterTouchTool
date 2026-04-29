@@ -121,6 +121,10 @@ public final class CGEventTapService {
             injected = keyboardInjector.sendChromeZoomIn()
         case .zoomOutAndSwallow:
             injected = keyboardInjector.sendChromeZoomOut()
+        case .nextTabAndSwallow:
+            injected = keyboardInjector.sendChromeNextTab()
+        case .previousTabAndSwallow:
+            injected = keyboardInjector.sendChromePreviousTab()
         case .passThrough:
             injected = false
         }

@@ -18,9 +18,11 @@ Date:
 | A2 Permissions | PASS / FAIL | |
 | A3 Logi pass-through invariant | PASS / FAIL | |
 | A4 Chrome zoom behavior | PASS / FAIL | |
-| A5 Non-Chrome pass-through | PASS / FAIL | |
-| A6 Disable / Quit | PASS / FAIL | |
-| A7 Uninstall | PASS / FAIL | |
+| A5 Chrome tab-switch behavior | PASS / FAIL | |
+| A6 Ambiguous modifier pass-through | PASS / FAIL | |
+| A7 Non-Chrome pass-through | PASS / FAIL | |
+| A8 Disable / Quit | PASS / FAIL | |
+| A9 Uninstall | PASS / FAIL | |
 
 ## Human decision
 

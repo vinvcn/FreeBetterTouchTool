@@ -8,12 +8,16 @@ Build a small macOS menu bar utility. It is not a general input automation platf
 
 ## MVP behavior
 
-Only one behavior should be changed:
+Only these Chrome-only horizontal scroll behaviors should be changed:
 
 - If Google Chrome is the frontmost app
 - and the event is horizontal scroll
 - and the only active modifier is Option
 - then map the scroll direction to Chrome page zoom and swallow the original scroll event.
+- If Google Chrome is the frontmost app
+- and the event is horizontal scroll
+- and the only active modifier is Control
+- then map the scroll direction to Chrome tab switching and swallow the original scroll event.
 
 Everything else must pass through untouched.
 
@@ -43,7 +47,7 @@ These rules are non-negotiable.
 20. Do not write to `/Library/PrivilegedHelperTools`.
 21. The event tap mask must only include `scrollWheel`.
 22. Unmatched events must return the original event.
-23. Only Chrome + Option-only + horizontal scroll may be swallowed.
+23. Only Chrome + Option-only + horizontal scroll or Chrome + Control-only + horizontal scroll may be swallowed.
 24. Event tap callbacks must not perform disk IO.
 25. Event tap callbacks must not perform network IO.
 26. Event tap callbacks must not call shell commands.
@@ -90,8 +94,10 @@ At minimum, tests must cover:
 - Chrome + horizontal scroll + no modifier => pass-through
 - Chrome + horizontal scroll + Command => pass-through
 - Chrome + horizontal scroll + Shift => pass-through
-- Chrome + horizontal scroll + Control => pass-through
+- Chrome + horizontal scroll + Control-only + positive dx => next-tab-and-swallow
+- Chrome + horizontal scroll + Control-only + negative dx => previous-tab-and-swallow
 - Chrome + horizontal scroll + Option+Command => pass-through
+- Chrome + horizontal scroll + Option+Control => pass-through
 - Chrome + horizontal scroll + Option-only + positive dx => zoom-in-and-swallow
 - Chrome + horizontal scroll + Option-only + negative dx => zoom-out-and-swallow
 - disabled router => pass-through

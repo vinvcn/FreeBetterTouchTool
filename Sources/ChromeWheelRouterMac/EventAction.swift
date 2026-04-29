@@ -10,7 +10,7 @@ public enum EventAction: String, Sendable, Equatable {
         }
 
         switch decision {
-        case .zoomInAndSwallow, .zoomOutAndSwallow:
+        case .zoomInAndSwallow, .zoomOutAndSwallow, .nextTabAndSwallow, .previousTabAndSwallow:
             return .injectAndSwallow
         case .passThrough:
             return .passThrough

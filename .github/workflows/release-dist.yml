@@ -5,6 +5,8 @@ on:
   push:
     tags:
       - 'v*'
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:
@@ -30,10 +32,17 @@ jobs:
         run: swift --version
 
       - name: Build dist package
-        env:
-          VERSION: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || format('pr-{0}-{1}', github.event.pull_request.number, github.run_number) }}
         run: |
           set -euo pipefail
+          if [ '${{ github.event_name }}' = 'release' ]; then
+            VERSION='${{ github.event.release.tag_name }}'
+          elif [ '${{ github.ref_type }}' = 'tag' ]; then
+            VERSION='${{ github.ref_name }}'
+          elif [ '${{ github.event_name }}' = 'pull_request' ]; then
+            VERSION='pr-${{ github.event.pull_request.number }}-${{ github.run_number }}'
+          else
+            VERSION='run-${{ github.run_number }}'
+          fi
           VERSION="${VERSION#v}" ./scripts/package_rc.sh
 
       - name: Verify dist artifact set
@@ -51,9 +60,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p release-assets
-          safe_ref="$(printf '%s' '${{ github.ref_name }}' | tr '/:' '--')"
-          tar -czf "release-assets/dist-${safe_ref}-${{ github.run_number }}.tar.gz" -C dist .
-          shasum -a 256 release-assets/* > release-assets/SHA256SUMS.txt
+          cp dist/* release-assets/
+          (cd release-assets && shasum -a 256 * > RELEASE_ASSET_SHA256SUMS.txt)
           ls -la release-assets
 
       - name: Upload dist workflow artifact
@@ -66,7 +74,7 @@ jobs:
 
   release:
     name: Create or update GitHub Release
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'release' }}
     needs: build
     runs-on: macos-latest
     permissions:
@@ -81,7 +89,7 @@ jobs:
       - name: Create or update release assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ github.event.release.tag_name || github.ref_name }}
         run: |
           set -euo pipefail
           ls -la release-assets

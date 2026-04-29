@@ -8,6 +8,11 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Optional existing release tag to build assets for, for example v0.0.2'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -38,6 +43,8 @@ jobs:
             VERSION='${{ github.event.release.tag_name }}'
           elif [ '${{ github.ref_type }}' = 'tag' ]; then
             VERSION='${{ github.ref_name }}'
+          elif [ '${{ github.event_name }}' = 'workflow_dispatch' ] && [ -n '${{ inputs.release_tag }}' ]; then
+            VERSION='${{ inputs.release_tag }}'
           elif [ '${{ github.event_name }}' = 'pull_request' ]; then
             VERSION='pr-${{ github.event.pull_request.number }}-${{ github.run_number }}'
           else
@@ -74,7 +81,7 @@ jobs:
 
   release:
     name: Create or update GitHub Release
-    if: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'release' }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') }}
     needs: build
     runs-on: macos-latest
     permissions:
@@ -90,7 +97,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
-          TAG: ${{ github.event.release.tag_name || github.ref_name }}
+          TAG: ${{ inputs.release_tag || github.event.release.tag_name || github.ref_name }}
         run: |
           set -euo pipefail
           ls -la release-assets

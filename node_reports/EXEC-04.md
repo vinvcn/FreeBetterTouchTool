@@ -62,5 +62,18 @@ swift run ChromeWheelRouterCLI --dry-run
 swift run ChromeWheelRouterCLI --listen-only
 ```
 
+## Owner Manual QA Update
+Reported by owner on 2026-04-29: the required routing safety matrix passed on real local usage:
+- non-Chrome + Option + horizontal scroll => pass-through
+- Chrome + vertical scroll => pass-through
+- Chrome + horizontal scroll + no modifier => pass-through
+- Chrome + horizontal scroll + Command => pass-through
+- Chrome + horizontal scroll + Shift => pass-through
+- Chrome + horizontal scroll + Control => pass-through
+- Chrome + horizontal scroll + Option+Command => pass-through
+- Chrome + horizontal scroll + Option-only + positive dx => zoom-in and swallow
+- Chrome + horizontal scroll + Option-only + negative dx => zoom-out and swallow
+- disabled router => pass-through
+
 ## Next Node
 Next node: **EXEC-05**.

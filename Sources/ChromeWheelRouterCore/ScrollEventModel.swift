@@ -18,4 +18,8 @@ public struct ScrollEventModel: Sendable, Equatable {
         self.modifiers = modifiers
         self.routerEnabled = routerEnabled
     }
+
+    public var isHorizontalOnlyScroll: Bool {
+        horizontalDelta != 0 && verticalDelta == 0
+    }
 }

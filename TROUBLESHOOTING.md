@@ -1,5 +1,21 @@
 # Troubleshooting
 
+## Missing permissions status in menu
+
+If the menu bar app shows `Status: Missing Permissions` or `Permissions: Missing`, ChromeWheelRouter is intentionally fail-closed and will **not** create the active event tap.
+
+Grant both permissions in System Settings:
+
+- Privacy & Security → Accessibility
+- Privacy & Security → Input Monitoring
+
+You can use these menu actions directly from ChromeWheelRouter:
+
+- Open Accessibility Settings
+- Open Input Monitoring Settings
+
+After granting access, quit and relaunch the app.
+
 ## Bare horizontal wheel stopped working in Chrome
 
 Expected code behavior is pass-through. Check:
@@ -19,10 +35,3 @@ Possible future fallback:
   - Option + horizontal wheel → zoom
 
 This is not the default MVP because the user asked to preserve Logi Options+ behavior.
-
-## Permissions do not appear
-
-Quit and reopen the app. If still missing, open System Settings manually:
-
-- Privacy & Security → Input Monitoring
-- Privacy & Security → Accessibility

@@ -26,6 +26,17 @@ final class RouterTests: XCTestCase {
         XCTAssertEqual(router.decide(event), .passThrough)
     }
 
+    func testChromeHorizontalAndVerticalSimultaneousPassesThrough() {
+        let event = ScrollEventModel(
+            frontmostBundleID: "com.google.Chrome",
+            horizontalDelta: 1,
+            verticalDelta: 1,
+            modifiers: [.option]
+        )
+
+        XCTAssertEqual(router.decide(event), .passThrough)
+    }
+
     func testChromeHorizontalNoModifierPassesThrough() {
         let event = ScrollEventModel(
             frontmostBundleID: "com.google.Chrome",

@@ -14,7 +14,7 @@ public struct Router: Sendable {
             return .passThrough
         }
 
-        guard event.horizontalDelta != 0 else {
+        guard event.isHorizontalOnlyScroll else {
             return .passThrough
         }
 

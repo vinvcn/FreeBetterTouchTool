@@ -144,8 +144,8 @@ Final behavior involving MX Master hardware, Logi Options+, Chrome, and macOS pr
 No root-level `*_addendum` directories should be introduced. Supplemental materials belong in their canonical directories, for example:
 
 - `agent_state_harness/`
-- `ai_context/`
-- `mvp_user_flow_harness/`
+- `ChromeWheelRouter/docs/specs/`
+- `ChromeWheelRouter/docs/qa/mvp_user_flow_harness/`
 
 ## Project memory requirements
 
@@ -153,14 +153,14 @@ When completing any execution node, update project memory if the task creates ne
 
 Update these files as appropriate:
 
-- `node_reports/EXEC-XX.md`
-- `project_memory/node_summaries/EXEC-XX.md`
-- `project_memory/lessons_learned/*.md`
-- `project_memory/decisions/ADR-*.md`
-- `Docs/TROUBLESHOOTING.md`
+- `ChromeWheelRouter/docs/development/node_reports/EXEC-XX.md`
+- `ChromeWheelRouter/docs/development/project_memory/node_summaries/EXEC-XX.md`
+- `ChromeWheelRouter/docs/development/project_memory/lessons_learned/*.md`
+- `ChromeWheelRouter/docs/development/project_memory/decisions/ADR-*.md`
+- `ChromeWheelRouter/docs/product/TROUBLESHOOTING.md`
 
 Do not rely on chat history as project memory.
 
-If a bug, toolchain issue, compatibility issue, or safety edge case is discovered, record it in `project_memory/lessons_learned/`.
+If a bug, toolchain issue, compatibility issue, or safety edge case is discovered, record it in `ChromeWheelRouter/docs/development/project_memory/lessons_learned/`.
 
-If a durable architectural decision is made, record it as an ADR in `project_memory/decisions/`.
+If a durable architectural decision is made, record it as an ADR in `ChromeWheelRouter/docs/development/project_memory/decisions/`.

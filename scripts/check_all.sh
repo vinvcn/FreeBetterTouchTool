@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 python3 -S agent_state_harness/scripts/check_state.py
-python3 -S mvp_user_flow_harness/scripts/check_user_flows.py
+python3 -S ChromeWheelRouter/docs/qa/mvp_user_flow_harness/scripts/check_user_flows.py
 ./scripts/check_static_safety.sh
 
 if [ "$(uname -s)" = "Darwin" ]; then

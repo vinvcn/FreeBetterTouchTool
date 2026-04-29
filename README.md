@@ -25,7 +25,7 @@ The first implementation must be fail-open and narrowly scoped:
 - do not require root
 - do not install drivers, daemons, kernel extensions, or privileged helpers
 
-See [`AGENTS.md`](AGENTS.md) and [`ai_context/safety_constraints.md`](ai_context/safety_constraints.md).
+See [`AGENTS.md`](AGENTS.md) and [`ChromeWheelRouter/docs/specs/safety_constraints.md`](ChromeWheelRouter/docs/specs/safety_constraints.md).
 
 ## Repository bootstrap
 
@@ -47,15 +47,17 @@ Then open Codex Web / Codex Cloud and select this GitHub repo.
 ## What this scaffold contains
 
 ```text
-ai_context/                Human + agent context for Codex Cloud
+ChromeWheelRouter/docs/    Feature-specific product, specs, QA, acceptance, and development docs
 AGENTS.md                  Hard instructions for Codex agents
-agent_state_harness/       Agent state schema, state file, and validation script
-mvp_user_flow_harness/     MVP user-flow scenarios and manual QA harness
-Sources/                   Starter pure Swift routing core
-Tests/                     Starter unit tests
+agent_state_harness/       Project-level agent state schema, state file, and validation script
+project_control/           Project-level execution policy and gates
+Sources/                   Swift implementation
+Tests/                     Swift tests
 scripts/                   Local bootstrap and validation scripts
-.github/workflows/         Basic CI starter
+.github/workflows/         CI and packaging workflows
 ```
+
+See [`ChromeWheelRouter/docs/README.md`](ChromeWheelRouter/docs/README.md) for the feature documentation layout.
 
 ## Local checks
 

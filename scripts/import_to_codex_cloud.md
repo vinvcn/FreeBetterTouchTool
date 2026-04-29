@@ -11,7 +11,7 @@ Manual steps:
 5. Start with this prompt:
 
 ```text
-Read AGENTS.md, ai_context/*.md, agent_state_harness/current_state.json, and mvp_user_flow_harness/scenarios.json.
+Read AGENTS.md, ChromeWheelRouter/docs/specs/*.md, agent_state_harness/current_state.json, and ChromeWheelRouter/docs/qa/mvp_user_flow_harness/scenarios.json.
 Do not expand scope.
 Run ./scripts/check_all.sh.
 Then propose the next smallest PR to implement the macOS adapter or menu bar app.

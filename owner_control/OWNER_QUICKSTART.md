@@ -36,7 +36,7 @@ export CODEX_ENV_ID=<your-codex-cloud-env-id>
 When Codex opens a PR:
 
 1. Wait for CI.
-2. Confirm the PR includes `node_reports/EXEC-01.md`.
+2. Confirm the PR includes `ChromeWheelRouter/docs/development/node_reports/EXEC-01.md`.
 3. Merge if green.
 4. Mark node done:
 

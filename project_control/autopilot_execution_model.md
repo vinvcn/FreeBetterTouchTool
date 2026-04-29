@@ -33,7 +33,7 @@ A node is GO only when:
 - Required files are changed.
 - Tests pass.
 - Static safety checks pass.
-- Node report exists under `node_reports/`.
+- Node report exists under `ChromeWheelRouter/docs/development/node_reports/`.
 - The next node is explicitly named.
 - No scope expansion occurred.
 

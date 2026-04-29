@@ -2,9 +2,9 @@
 
 Read first:
 - AGENTS.md
-- ai_context/*.md
+- ChromeWheelRouter/docs/specs/*.md
 - project_control/*.md
-- node_reports/EXEC-01.md
+- ChromeWheelRouter/docs/development/node_reports/EXEC-01.md
 
 Goal:
 Complete the pure Swift routing core.
@@ -28,7 +28,7 @@ Tasks:
    - vertical-only => passThrough
    - disabled router => passThrough
 3. Run all checks.
-4. Add `node_reports/EXEC-02.md`.
+4. Add `ChromeWheelRouter/docs/development/node_reports/EXEC-02.md`.
 
 Hard constraints:
 - No macOS event tap code in this node.

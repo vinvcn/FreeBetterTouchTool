@@ -40,9 +40,9 @@ git push
 project_control/engineering_nodes.md        # 节点总览，人类控制面板
 project_control/node_dependency_graph.md    # 节点依赖关系
 project_control/go_no_go_policy.md          # 每个节点怎么判定通过/不通过
-codex_tasks/execution/*.md                  # Codex 执行节点 prompts
-codex_tasks/acceptance/*.md                 # 验收节点 prompts 和人工确认协议
-codex_tasks/release/*.md                    # 发布阶段规划 prompts
+ChromeWheelRouter/docs/development/codex_tasks/execution/*.md                  # Codex 执行节点 prompts
+ChromeWheelRouter/docs/development/codex_tasks/acceptance/*.md                 # 验收节点 prompts 和人工确认协议
+ChromeWheelRouter/docs/development/codex_tasks/release/*.md                    # 发布阶段规划 prompts
 scripts/create_github_issues.sh             # 用 gh 批量创建节点 issue
 templates/node_report.md                    # 每个 PR 必须填写的节点报告模板
 templates/human_acceptance_report.md        # 你本机验收确认模板

@@ -89,12 +89,13 @@ jobs:
       - name: Create or update release assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
           TAG: ${{ github.event.release.tag_name || github.ref_name }}
         run: |
           set -euo pipefail
           ls -la release-assets
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" release-assets/* --clobber
+          if gh release view "$TAG" --repo "$GH_REPO" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-assets/* --clobber --repo "$GH_REPO"
           else
-            gh release create "$TAG" release-assets/* --title "$TAG" --generate-notes --verify-tag
+            gh release create "$TAG" release-assets/* --title "$TAG" --generate-notes --verify-tag --repo "$GH_REPO"
           fi

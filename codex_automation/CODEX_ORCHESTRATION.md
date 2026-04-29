@@ -36,7 +36,7 @@ The Codex CLI supports cloud task submission through `codex cloud exec`; this sc
 
 Each Codex PR must include:
 
-- A node report under `node_reports/`.
+- A node report under `ChromeWheelRouter/docs/development/node_reports/`.
 - Test evidence.
 - Safety evidence.
 - Next node recommendation.

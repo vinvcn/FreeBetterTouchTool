@@ -2,7 +2,7 @@
 
 Read first:
 - AGENTS.md
-- node_reports/EXEC-08.md
+- ChromeWheelRouter/docs/development/node_reports/EXEC-08.md
 
 Goal:
 Produce a release candidate package that the owner can install locally for acceptance.
@@ -21,7 +21,7 @@ Tasks:
    - SECURITY.md
    - TROUBLESHOOTING.md
    - MANUAL_QA.md
-4. Add `node_reports/EXEC-09.md`.
+4. Add `ChromeWheelRouter/docs/development/node_reports/EXEC-09.md`.
 
 Hard constraints:
 - Do not require Apple Developer signing credentials for dev RC.

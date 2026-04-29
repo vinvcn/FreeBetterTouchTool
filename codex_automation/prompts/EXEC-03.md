@@ -3,8 +3,8 @@
 Read first:
 - AGENTS.md
 - SECURITY.md
-- ai_context/*.md
-- node_reports/EXEC-02.md
+- ChromeWheelRouter/docs/specs/*.md
+- ChromeWheelRouter/docs/development/node_reports/EXEC-02.md
 
 Goal:
 Implement a CLI spike that can observe macOS scrollWheel events safely.
@@ -19,7 +19,7 @@ Tasks:
 4. Convert CGEvent into ScrollEventModel.
 5. For this node, do not inject Chrome zoom yet.
 6. Return original event for all modes in this node.
-7. Add `node_reports/EXEC-03.md`.
+7. Add `ChromeWheelRouter/docs/development/node_reports/EXEC-03.md`.
 
 Hard constraints:
 - Do not listen to keyDown/keyUp.

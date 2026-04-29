@@ -2,7 +2,7 @@
 
 Read first:
 - AGENTS.md
-- node_reports/EXEC-04.md
+- ChromeWheelRouter/docs/development/node_reports/EXEC-04.md
 
 Goal:
 Turn the CLI spike into a minimal macOS menu bar app.
@@ -18,7 +18,7 @@ Tasks:
 3. App should start disabled until permissions and user enablement are satisfied.
 4. Reuse the routing/event-tap implementation from CLI.
 5. Keep CLI target if useful for debugging.
-6. Add `node_reports/EXEC-05.md`.
+6. Add `ChromeWheelRouter/docs/development/node_reports/EXEC-05.md`.
 
 Hard constraints:
 - No Start at Login in this node.

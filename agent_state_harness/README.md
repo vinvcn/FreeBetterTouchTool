@@ -5,7 +5,7 @@ Purpose: keep Codex Cloud agents aligned across tasks and PRs.
 Codex agents should read:
 
 1. `AGENTS.md`
-2. `ai_context/*.md`
+2. `ChromeWheelRouter/docs/specs/*.md`
 3. `agent_state_harness/current_state.json`
 4. the current issue / task prompt
 

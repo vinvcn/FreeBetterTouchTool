@@ -5,7 +5,7 @@ Use this checklist before merging any EXEC node PR.
 ## Required
 
 - [ ] PR targets exactly one node.
-- [ ] PR includes `node_reports/EXEC-XX.md`.
+- [ ] PR includes `ChromeWheelRouter/docs/development/node_reports/EXEC-XX.md`.
 - [ ] `scripts/check_all.sh` passes.
 - [ ] CI passed.
 - [ ] No forbidden API or permission introduced.

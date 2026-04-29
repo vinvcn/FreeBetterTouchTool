@@ -33,10 +33,10 @@
 
 ## Project Definition Done
 
-- `ai_context/`
+- `ChromeWheelRouter/docs/specs/`
 - `AGENTS.md`
 - `agent_state_harness/`
-- `mvp_user_flow_harness/`
+- `ChromeWheelRouter/docs/qa/mvp_user_flow_harness/`
 - 纯 routing core 初始测试
 
 ---
@@ -49,14 +49,14 @@
 
 **目标**：把 scaffold 变成一个可持续开发的工程基线。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-01-baseline-hardening.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-01-baseline-hardening.md`
 
 **交付物**：
 
 - CI 可跑 `swift test`
 - safety smoke test 可跑
 - `AGENTS.md` 与 safety constraints 对齐
-- 每个 PR 必须包含 `node_reports/EXEC-01.md`
+- 每个 PR 必须包含 `ChromeWheelRouter/docs/development/node_reports/EXEC-01.md`
 
 **自动 gate**：
 
@@ -78,7 +78,7 @@
 
 **目标**：把纯逻辑规则做完整，并锁死 pass-through 约束。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-02-routing-core.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-02-routing-core.md`
 
 **交付物**：
 
@@ -104,7 +104,7 @@
 
 **目标**：先用 CLI 验证 event tap 链路，不做 UI。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-03-event-tap-cli-spike.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-03-event-tap-cli-spike.md`
 
 **交付物**：
 
@@ -136,7 +136,7 @@
 
 **目标**：让匹配事件真实触发 Chrome 页面 zoom。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-04-chrome-zoom-injection.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-04-chrome-zoom-injection.md`
 
 **交付物**：
 
@@ -166,7 +166,7 @@
 
 **目标**：把 CLI 能力包进可日常使用的菜单栏 App。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-05-menu-bar-mvp.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-05-menu-bar-mvp.md`
 
 **交付物**：
 
@@ -198,7 +198,7 @@
 
 **目标**：权限缺失时不乱跑，给用户明确指引。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-06-permission-ux.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-06-permission-ux.md`
 
 **交付物**：
 
@@ -228,7 +228,7 @@
 
 **目标**：让程序可控、可停、可恢复。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-07-runtime-safety.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-07-runtime-safety.md`
 
 **交付物**：
 
@@ -259,7 +259,7 @@
 
 **目标**：先做到本地可安装、可卸载，不碰系统级目录。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-08-dev-install-uninstall.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-08-dev-install-uninstall.md`
 
 **交付物**：
 
@@ -290,17 +290,17 @@
 
 **目标**：生成给你安装验收的 RC 包。
 
-**Codex 输入**：`codex_tasks/execution/EXEC-09-rc-packaging.md`
+**Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-09-rc-packaging.md`
 
 **交付物**：
 
 - `dist/ChromeWheelRouter-v0.1.0-rc1.dmg`
 - `dist/SHA256SUMS`
 - `dist/build_manifest.json`
-- `Docs/INSTALL.md`
-- `Docs/UNINSTALL.md`
-- `Docs/SECURITY.md`
-- `Docs/TROUBLESHOOTING.md`
+- `ChromeWheelRouter/docs/product/INSTALL.md`
+- `ChromeWheelRouter/docs/product/UNINSTALL.md`
+- `SECURITY.md`
+- `ChromeWheelRouter/docs/product/TROUBLESHOOTING.md`
 
 **自动 gate**：
 

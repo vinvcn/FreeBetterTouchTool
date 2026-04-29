@@ -5,7 +5,7 @@ cd "$ROOT"
 
 ./scripts/check_all.sh
 
-for path in   AGENTS.md   ai_context/project_brief.md   ai_context/engineering_execution_model.md   agent_state_harness/state_transition_rules.md   mvp_user_flow_harness/p0_p1_user_flows.md   project_control/engineering_nodes.md   codex_automation/CODEX_ORCHESTRATION.md   owner_control/OWNER_QUICKSTART.md   acceptance/LOCAL_ACCEPTANCE_RUNBOOK.md; do
+for path in   AGENTS.md   ChromeWheelRouter/docs/specs/project_brief.md   ChromeWheelRouter/docs/specs/engineering_execution_model.md   agent_state_harness/state_transition_rules.md   ChromeWheelRouter/docs/qa/mvp_user_flow_harness/p0_p1_user_flows.md   project_control/engineering_nodes.md   codex_automation/CODEX_ORCHESTRATION.md   owner_control/OWNER_QUICKSTART.md   ChromeWheelRouter/docs/acceptance/LOCAL_ACCEPTANCE_RUNBOOK.md; do
   if [ ! -e "$path" ]; then
     echo "missing required file: $path" >&2
     exit 1

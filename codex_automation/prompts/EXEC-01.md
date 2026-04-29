@@ -2,7 +2,7 @@
 
 Read first:
 - AGENTS.md
-- ai_context/*.md
+- ChromeWheelRouter/docs/specs/*.md
 - project_control/*.md
 - codex_automation/execution_queue.yml
 
@@ -18,7 +18,7 @@ Tasks:
    - modifications to Chrome or Logi Options+ config
 3. Ensure `swift test` is wired into checks if Swift sources exist.
 4. Ensure state harness and MVP flow harness are included in check_all if present.
-5. Add or update `node_reports/EXEC-01.md` with exact commands run, results, risks, and next node.
+5. Add or update `ChromeWheelRouter/docs/development/node_reports/EXEC-01.md` with exact commands run, results, risks, and next node.
 
 Hard constraints:
 - Do not implement CGEventTap yet.

@@ -37,7 +37,7 @@
 
 每个 Codex PR 必须包含：
 
-- 对应 node report：`node_reports/EXEC-XX.md`
+- 对应 node report：`ChromeWheelRouter/docs/development/node_reports/EXEC-XX.md`
 - 测试结果摘要
 - 改动范围摘要
 - 安全约束确认

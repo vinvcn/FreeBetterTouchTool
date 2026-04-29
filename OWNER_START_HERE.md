@@ -4,9 +4,9 @@ This is the combined project package for ChromeWheelRouter.
 
 It includes:
 
-1. The project definition scaffold: `ai_context/`, `AGENTS.md`, `agent_state_harness/`, `mvp_user_flow_harness/`.
-2. The engineering execution flow: `project_control/`, `codex_tasks/`, `gate_checklists/`, `templates/`.
-3. The minimum-human-intervention control layer: `codex_automation/`, `owner_control/`, `acceptance/`, `.codex/`, `.github/`.
+1. The project definition scaffold: `ChromeWheelRouter/docs/specs/`, `AGENTS.md`, `agent_state_harness/`, `ChromeWheelRouter/docs/qa/mvp_user_flow_harness/`.
+2. The engineering execution flow: `project_control/`, `ChromeWheelRouter/docs/development/codex_tasks/`, `gate_checklists/`, `templates/`.
+3. The minimum-human-intervention control layer: `codex_automation/`, `owner_control/`, `ChromeWheelRouter/docs/acceptance/`, `.codex/`, `.github/`.
 
 ## Recommended owner flow
 
@@ -65,8 +65,8 @@ Codex can build and test the project, but it cannot verify your physical MX Mast
 Use:
 
 ```text
-acceptance/LOCAL_ACCEPTANCE_RUNBOOK.md
-acceptance/HUMAN_ACCEPTANCE_REPORT.md
+ChromeWheelRouter/docs/acceptance/LOCAL_ACCEPTANCE_RUNBOOK.md
+ChromeWheelRouter/docs/acceptance/HUMAN_ACCEPTANCE_REPORT.md
 ```
 
 A release candidate is not accepted until you install it on your Mac and confirm:

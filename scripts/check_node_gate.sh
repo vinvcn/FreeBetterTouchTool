@@ -5,7 +5,7 @@ if [[ -z "$NODE_ID" ]]; then
   echo "Usage: $0 EXEC-01" >&2
   exit 2
 fi
-REPORT="node_reports/${NODE_ID}.md"
+REPORT="ChromeWheelRouter/docs/development/node_reports/${NODE_ID}.md"
 if [[ ! -f "$REPORT" ]]; then
   echo "Missing node report: $REPORT" >&2
   exit 1

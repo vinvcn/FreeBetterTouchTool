@@ -26,7 +26,8 @@ jobs:
       - name: Ensure node report exists on PRs
         if: github.event_name == 'pull_request'
         run: |
-          if ! find node_reports -maxdepth 1 -name 'EXEC-*.md' -type f | grep -q .; then
-            echo "Expected a node report under node_reports/EXEC-*.md"
+          node_report_dir="ChromeWheelRouter/docs/development/node_reports"
+          if ! find "$node_report_dir" -maxdepth 1 -name 'EXEC-*.md' -type f | grep -q .; then
+            echo "Expected a node report under $node_report_dir/EXEC-*.md"
             exit 1
           fi

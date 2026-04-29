@@ -3,7 +3,7 @@
 Read first:
 - AGENTS.md
 - SECURITY.md
-- node_reports/EXEC-05.md
+- ChromeWheelRouter/docs/development/node_reports/EXEC-05.md
 
 Goal:
 Make permission handling safe and understandable.
@@ -13,7 +13,7 @@ Tasks:
 2. Provide menu actions to open Accessibility and Input Monitoring settings.
 3. If permissions are missing, display Missing Permissions and do not start active event tap.
 4. Add clear troubleshooting text.
-5. Add `node_reports/EXEC-06.md`.
+5. Add `ChromeWheelRouter/docs/development/node_reports/EXEC-06.md`.
 
 Hard constraints:
 - Do not attempt to bypass macOS TCC/privacy prompts.

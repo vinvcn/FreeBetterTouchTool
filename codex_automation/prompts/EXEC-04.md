@@ -3,7 +3,7 @@
 Read first:
 - AGENTS.md
 - SECURITY.md
-- node_reports/EXEC-03.md
+- ChromeWheelRouter/docs/development/node_reports/EXEC-03.md
 
 Goal:
 Implement real Chrome zoom behavior in the CLI spike.
@@ -19,7 +19,7 @@ Tasks:
 3. Implement active mode.
 4. Ensure listen-only and dry-run never swallow and never inject keys.
 5. Add tests where possible and static checks for forbidden event types.
-6. Add `node_reports/EXEC-04.md`.
+6. Add `ChromeWheelRouter/docs/development/node_reports/EXEC-04.md`.
 
 Hard constraints:
 - Only matching events may return nil.

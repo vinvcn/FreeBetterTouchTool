@@ -9,7 +9,7 @@ validate:
 	python3 agent_state_harness/scripts/state_harness.py validate
 
 harness:
-	python3 mvp_user_flow_harness/scripts/run_mvp_user_flow_harness.py
+	python3 ChromeWheelRouter/docs/qa/mvp_user_flow_harness/scripts/check_user_flows.py
 
 build:
 	swift build -c release

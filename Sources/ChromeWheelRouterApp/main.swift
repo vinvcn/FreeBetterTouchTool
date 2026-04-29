@@ -16,14 +16,33 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     private var userEnabled = false
     private var dryRunEnabled = false
     private var tapService: CGEventTapService?
+    private var statusPollTimer: Timer?
+
+    private lazy var appSupportDirectory: URL = {
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Application Support", isDirectory: true)
+        return base.appendingPathComponent("ChromeWheelRouter", isDirectory: true)
+    }()
+
+    private var killSwitchURL: URL {
+        appSupportDirectory.appendingPathComponent("kill-switch", isDirectory: false)
+    }
+
+    private var logURL: URL {
+        appSupportDirectory.appendingPathComponent("runtime.log", isDirectory: false)
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+        ensureAppSupportDirectory()
         buildMenuBarUI()
+        startStatusPolling()
         reconcileRuntime()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        statusPollTimer?.invalidate()
+        statusPollTimer = nil
         stopTapService()
     }
 
@@ -109,6 +128,12 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         NSApp.terminate(nil)
     }
 
+    private func startStatusPolling() {
+        statusPollTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.reconcileRuntime()
+        }
+    }
+
     private func openPrivacySettingsPane(anchor: String) {
         guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?") else {
             return
@@ -124,6 +149,13 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     }
 
     private func reconcileRuntime() {
+        if killSwitchPresent() {
+            if userEnabled {
+                appendLog("Kill switch present. Forcing disabled state.")
+            }
+            userEnabled = false
+        }
+
         let hasPermissions = permissionsSatisfied()
         let shouldRun = userEnabled && hasPermissions
 
@@ -139,17 +171,31 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
 
     private func restartTapService(mode: EventTapMode) {
         stopTapService()
-        let service = CGEventTapService(mode: mode)
+        let service = CGEventTapService(
+            mode: mode,
+            isEnabled: { [weak self] in self?.userEnabled == true },
+            onTapDisabled: { [weak self] reason in
+                self?.appendLog("Event tap temporarily disabled: \(reason).")
+            },
+            logger: { [weak self] line in
+                self?.appendLog(line)
+            }
+        )
         if service.start() {
             tapService = service
+            appendLog("Event tap started in mode=\(mode.rawValue).")
         } else {
             tapService = nil
             userEnabled = false
+            appendLog("Failed to start event tap. Disabling app.")
         }
     }
 
     private func stopTapService() {
         tapService?.stop()
+        if tapService != nil {
+            appendLog("Event tap stopped.")
+        }
         tapService = nil
     }
 
@@ -166,6 +212,40 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
             statusMenuItem.title = "Status: Missing Permissions"
         } else {
             statusMenuItem.title = "Status: Disabled"
+        }
+    }
+
+    private func killSwitchPresent() -> Bool {
+        FileManager.default.fileExists(atPath: killSwitchURL.path)
+    }
+
+    private func ensureAppSupportDirectory() {
+        do {
+            try FileManager.default.createDirectory(at: appSupportDirectory, withIntermediateDirectories: true)
+        } catch {
+            fputs("Failed to create app support directory: \(error)\n", stderr)
+        }
+    }
+
+    private func appendLog(_ line: String) {
+        let timestamp = ISO8601DateFormatter().string(from: Date())
+        let entry = "[\(timestamp)] \(line)\n"
+        guard let data = entry.data(using: .utf8) else {
+            return
+        }
+
+        if !FileManager.default.fileExists(atPath: logURL.path) {
+            FileManager.default.createFile(atPath: logURL.path, contents: data)
+            return
+        }
+
+        do {
+            let handle = try FileHandle(forWritingTo: logURL)
+            defer { try? handle.close() }
+            try handle.seekToEnd()
+            try handle.write(contentsOf: data)
+        } catch {
+            fputs("Failed to append runtime log: \(error)\n", stderr)
         }
     }
 }

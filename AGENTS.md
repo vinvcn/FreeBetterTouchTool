@@ -146,3 +146,21 @@ No root-level `*_addendum` directories should be introduced. Supplemental materi
 - `agent_state_harness/`
 - `ai_context/`
 - `mvp_user_flow_harness/`
+
+## Project memory requirements
+
+When completing any execution node, update project memory if the task creates new knowledge.
+
+Update these files as appropriate:
+
+- `node_reports/EXEC-XX.md`
+- `project_memory/node_summaries/EXEC-XX.md`
+- `project_memory/lessons_learned/*.md`
+- `project_memory/decisions/ADR-*.md`
+- `Docs/TROUBLESHOOTING.md`
+
+Do not rely on chat history as project memory.
+
+If a bug, toolchain issue, compatibility issue, or safety edge case is discovered, record it in `project_memory/lessons_learned/`.
+
+If a durable architectural decision is made, record it as an ADR in `project_memory/decisions/`.

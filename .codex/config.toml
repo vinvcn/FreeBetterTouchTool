@@ -1,0 +1,6 @@
+# Project-scoped Codex defaults.
+# Keep network off during agent work unless the owner explicitly enables it for a task.
+# This project should not need network access after setup.
+
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"

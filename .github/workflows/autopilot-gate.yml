@@ -1,0 +1,32 @@
+name: Autopilot Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  gate:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show environment
+        run: |
+          uname -a
+          swift --version || true
+          python3 --version
+      - name: Run project checks
+        run: |
+          if [ -x ./scripts/check_all.sh ]; then
+            CWR_RUN_XCTEST=1 ./scripts/check_all.sh
+          else
+            echo "No check_all.sh found"
+            exit 1
+          fi
+      - name: Ensure node report exists on PRs
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! find node_reports -maxdepth 1 -name 'EXEC-*.md' -type f | grep -q .; then
+            echo "Expected a node report under node_reports/EXEC-*.md"
+            exit 1
+          fi

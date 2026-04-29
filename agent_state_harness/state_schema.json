@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChromeWheelRouter Agent State",
+  "type": "object",
+  "required": [
+    "project",
+    "current_decision",
+    "scope",
+    "open_questions",
+    "next_action",
+    "definition_of_done",
+    "safety_invariants",
+    "backlog",
+    "manual_validation_required"
+  ],
+  "properties": {
+    "project": {
+      "type": "string"
+    },
+    "current_decision": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object",
+      "required": ["in_scope", "out_of_scope"],
+      "properties": {
+        "in_scope": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "next_action": {
+      "type": "string"
+    },
+    "definition_of_done": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "safety_invariants": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "backlog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "in_progress", "blocked", "done"]
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "manual_validation_required": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "last_updated_by": {
+      "type": "string"
+    },
+    "last_updated_note": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "product": "ChromeWheelRouter",
+  "version": "mvp-0",
+  "scenarios": [
+    {
+      "id": "FLOW-001",
+      "name": "Install and first launch",
+      "type": "manual",
+      "preconditions": [
+        "User has a Mac",
+        "User has Chrome installed",
+        "User has Logi Options+ configured for bare horizontal scroll"
+      ],
+      "steps": [
+        "Install ChromeWheelRouter.app",
+        "Launch the app",
+        "Observe menu bar status",
+        "Open permission settings from app menu",
+        "Grant Accessibility and Input Monitoring manually"
+      ],
+      "expected": [
+        "App launches without root",
+        "No driver or system daemon is installed",
+        "Missing permissions are clearly shown",
+        "User can enable after permissions are granted"
+      ]
+    },
+    {
+      "id": "FLOW-002",
+      "name": "Chrome Option horizontal scroll zoom",
+      "type": "manual",
+      "preconditions": [
+        "ChromeWheelRouter is enabled",
+        "Chrome is frontmost",
+        "Permissions are granted"
+      ],
+      "steps": [
+        "Hold Option",
+        "Move MX Master horizontal wheel right",
+        "Move MX Master horizontal wheel left"
+      ],
+      "expected": [
+        "Right movement zooms in",
+        "Left movement zooms out",
+        "Original horizontal scroll is swallowed only for this exact gesture"
+      ]
+    },
+    {
+      "id": "FLOW-003",
+      "name": "Bare horizontal scroll pass-through",
+      "type": "manual",
+      "preconditions": [
+        "ChromeWheelRouter is enabled",
+        "Chrome is frontmost",
+        "Logi Options+ has existing bare horizontal scroll behavior"
+      ],
+      "steps": [
+        "Do not hold any modifier",
+        "Move MX Master horizontal wheel right and left"
+      ],
+      "expected": [
+        "ChromeWheelRouter does not inject zoom shortcuts",
+        "ChromeWheelRouter returns the original event",
+        "Logi Options+ behavior remains observable"
+      ]
+    },
+    {
+      "id": "FLOW-004",
+      "name": "Non-Chrome pass-through",
+      "type": "manual",
+      "preconditions": [
+        "ChromeWheelRouter is enabled",
+        "Finder or Terminal is frontmost"
+      ],
+      "steps": [
+        "Hold Option",
+        "Move MX Master horizontal wheel right and left"
+      ],
+      "expected": [
+        "No Chrome zoom shortcut is sent",
+        "Event is passed through"
+      ]
+    },
+    {
+      "id": "FLOW-005",
+      "name": "Disable and quit",
+      "type": "manual",
+      "preconditions": [
+        "ChromeWheelRouter is running"
+      ],
+      "steps": [
+        "Disable from menu bar",
+        "Retest Chrome horizontal wheel",
+        "Quit from menu bar",
+        "Check that process is gone"
+      ],
+      "expected": [
+        "Disabled mode passes everything through",
+        "Quit removes runtime effect immediately",
+        "No restart is required"
+      ]
+    },
+    {
+      "id": "FLOW-006",
+      "name": "Clean uninstall",
+      "type": "manual",
+      "preconditions": [
+        "ChromeWheelRouter has been installed"
+      ],
+      "steps": [
+        "Quit the app",
+        "Remove app/config/logs using uninstall docs or script",
+        "Revoke macOS privacy permissions manually",
+        "Restart Chrome"
+      ],
+      "expected": [
+        "No background process remains",
+        "No system-level files remain",
+        "Logi Options+ and Chrome behavior return to baseline"
+      ]
+    }
+  ]
+}

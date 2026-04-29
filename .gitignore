@@ -1,0 +1,13 @@
+.DS_Store
+.build/
+DerivedData/
+*.xcuserstate
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+.env
+.env.*
+dist/
+*.dmg
+*.pkg
+*.zip
+agent_state_harness/local_state.json

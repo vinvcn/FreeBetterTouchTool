@@ -1,0 +1,38 @@
+project: ChromeWheelRouter
+strategy: sequential_nodes
+owner_intervention: minimal
+rules:
+  - Codex must read AGENTS.md and ai_context before changing code.
+  - Codex must not expand product scope.
+  - Codex must update node_reports/<NODE_ID>.md in every node PR.
+  - Codex must run ./scripts/check_all.sh if present.
+  - Codex must fix CI failures before declaring node complete.
+  - Codex must not claim hardware acceptance.
+nodes:
+  - id: EXEC-01
+    prompt: codex_automation/prompts/EXEC-01.md
+    required_report: node_reports/EXEC-01.md
+  - id: EXEC-02
+    prompt: codex_automation/prompts/EXEC-02.md
+    required_report: node_reports/EXEC-02.md
+  - id: EXEC-03
+    prompt: codex_automation/prompts/EXEC-03.md
+    required_report: node_reports/EXEC-03.md
+  - id: EXEC-04
+    prompt: codex_automation/prompts/EXEC-04.md
+    required_report: node_reports/EXEC-04.md
+  - id: EXEC-05
+    prompt: codex_automation/prompts/EXEC-05.md
+    required_report: node_reports/EXEC-05.md
+  - id: EXEC-06
+    prompt: codex_automation/prompts/EXEC-06.md
+    required_report: node_reports/EXEC-06.md
+  - id: EXEC-07
+    prompt: codex_automation/prompts/EXEC-07.md
+    required_report: node_reports/EXEC-07.md
+  - id: EXEC-08
+    prompt: codex_automation/prompts/EXEC-08.md
+    required_report: node_reports/EXEC-08.md
+  - id: EXEC-09
+    prompt: codex_automation/prompts/EXEC-09.md
+    required_report: node_reports/EXEC-09.md

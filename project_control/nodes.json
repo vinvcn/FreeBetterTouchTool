@@ -1,0 +1,26 @@
+{
+  "project": "ChromeWheelRouter",
+  "current_completed_node": "P0_PROJECT_DEFINITION",
+  "execution_nodes": [
+    {"id":"EXEC-01","title":"Baseline Hardening","owner":"Codex","human_gate":true,"depends_on":["P0_PROJECT_DEFINITION"]},
+    {"id":"EXEC-02","title":"Routing Core Completion","owner":"Codex","human_gate":true,"depends_on":["EXEC-01"]},
+    {"id":"EXEC-03","title":"macOS Event Tap CLI Spike","owner":"Codex + Human local check","human_gate":true,"depends_on":["EXEC-02"]},
+    {"id":"EXEC-04","title":"Chrome Zoom Injection","owner":"Codex + Human local check","human_gate":true,"depends_on":["EXEC-03"]},
+    {"id":"EXEC-05","title":"Menu Bar MVP","owner":"Codex + Human local check","human_gate":true,"depends_on":["EXEC-04"]},
+    {"id":"EXEC-06","title":"Permission UX and Fail-Closed","owner":"Codex + Human local check","human_gate":true,"depends_on":["EXEC-05"]},
+    {"id":"EXEC-07","title":"Runtime Safety Controls","owner":"Codex + Human local check","human_gate":true,"depends_on":["EXEC-06"]},
+    {"id":"EXEC-08","title":"Dev Install / Uninstall","owner":"Codex + Human local check","human_gate":true,"depends_on":["EXEC-07"]},
+    {"id":"EXEC-09","title":"RC Packaging","owner":"Codex + CI","human_gate":true,"depends_on":["EXEC-08"]}
+  ],
+  "acceptance_nodes": [
+    {"id":"ACCEPT-01","title":"Acceptance Bundle Review","owner":"Human","depends_on":["EXEC-09"]},
+    {"id":"ACCEPT-02","title":"Local Installation","owner":"Human","depends_on":["ACCEPT-01"]},
+    {"id":"ACCEPT-03","title":"Human Functional QA","owner":"Human","depends_on":["ACCEPT-02"]},
+    {"id":"ACCEPT-04","title":"Defect Loop or Acceptance Signoff","owner":"Human","depends_on":["ACCEPT-03"]}
+  ],
+  "release_nodes": [
+    {"id":"REL-01","title":"Release Strategy","owner":"Human + Codex","depends_on":["ACCEPT-04"]},
+    {"id":"REL-02","title":"Signing and Notarization Plan","owner":"Human + Codex","depends_on":["REL-01"]},
+    {"id":"REL-03","title":"Public Release Automation","owner":"Codex + Human","depends_on":["REL-02"]}
+  ]
+}

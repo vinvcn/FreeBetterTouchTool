@@ -1,0 +1,31 @@
+name: Execution node
+about: Codex-executed engineering node
+labels: [codex, execution]
+body:
+  - type: input
+    id: node_id
+    attributes:
+      label: Node ID
+      placeholder: EXEC-01
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What Codex should accomplish in this node.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Hard constraints
+      description: Non-negotiable safety and scope constraints.
+    validations:
+      required: true
+  - type: textarea
+    id: definition_of_done
+    attributes:
+      label: Definition of done
+    validations:
+      required: true

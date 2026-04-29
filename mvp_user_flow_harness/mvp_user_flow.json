@@ -1,0 +1,51 @@
+{
+  "name": "ChromeWheelRouter MVP User Flow",
+  "version": "0.1.0-skeleton",
+  "user_goal": "Use MX Master horizontal wheel in Chrome for existing Logi Options+ behavior, while Option + horizontal wheel zooms the page.",
+  "happy_path": [
+    {
+      "step": 1,
+      "actor": "user",
+      "action": "Install and open ChromeWheelRouter.app",
+      "expected": "A menu bar item appears."
+    },
+    {
+      "step": 2,
+      "actor": "user",
+      "action": "Grant required macOS permissions when prompted",
+      "expected": "App status changes to ready/enabled."
+    },
+    {
+      "step": 3,
+      "actor": "user",
+      "action": "Open Google Chrome and use bare horizontal wheel",
+      "expected": "Existing Logi Options+ behavior still works, such as tab switching."
+    },
+    {
+      "step": 4,
+      "actor": "user",
+      "action": "Hold Option and use horizontal wheel in Chrome",
+      "expected": "Chrome page zooms in or out."
+    },
+    {
+      "step": 5,
+      "actor": "user",
+      "action": "Switch to Finder or another non-Chrome app and use horizontal wheel",
+      "expected": "No ChromeWheelRouter behavior triggers."
+    },
+    {
+      "step": 6,
+      "actor": "user",
+      "action": "Disable or Quit ChromeWheelRouter",
+      "expected": "All mouse behavior returns to system / Logi Options+ defaults."
+    }
+  ],
+  "must_not_happen": [
+    "Chrome bare horizontal scroll triggers zoom.",
+    "Non-Chrome app receives Chrome zoom shortcut.",
+    "The app listens to keyboard events.",
+    "The app changes Logi Options+ settings.",
+    "The app changes Chrome settings.",
+    "The app requires root privileges."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "project": "ChromeWheelRouter",
+  "mode": "minimal-human-intervention",
+  "current_stage": "execution",
+  "owner_required_actions": [
+    "initial GitHub/Codex setup",
+    "start execution nodes or run submit script",
+    "human local acceptance on real Mac"
+  ],
+  "nodes": [
+    {"id":"EXEC-01","name":"Baseline hardening","depends_on":[],"human_level":"H1","artifact":"node_reports/EXEC-01.md"},
+    {"id":"EXEC-02","name":"Routing core completion","depends_on":["EXEC-01"],"human_level":"H1","artifact":"node_reports/EXEC-02.md"},
+    {"id":"EXEC-03","name":"Event tap CLI spike","depends_on":["EXEC-02"],"human_level":"H1","artifact":"node_reports/EXEC-03.md"},
+    {"id":"EXEC-04","name":"Chrome zoom injection","depends_on":["EXEC-03"],"human_level":"H1","artifact":"node_reports/EXEC-04.md"},
+    {"id":"EXEC-05","name":"Menu bar MVP","depends_on":["EXEC-04"],"human_level":"H1","artifact":"node_reports/EXEC-05.md"},
+    {"id":"EXEC-06","name":"Permission UX and fail-closed","depends_on":["EXEC-05"],"human_level":"H1","artifact":"node_reports/EXEC-06.md"},
+    {"id":"EXEC-07","name":"Runtime safety controls","depends_on":["EXEC-06"],"human_level":"H1","artifact":"node_reports/EXEC-07.md"},
+    {"id":"EXEC-08","name":"Dev install/uninstall","depends_on":["EXEC-07"],"human_level":"H1","artifact":"node_reports/EXEC-08.md"},
+    {"id":"EXEC-09","name":"RC packaging","depends_on":["EXEC-08"],"human_level":"H1","artifact":"node_reports/EXEC-09.md"},
+    {"id":"ACCEPT-01","name":"Acceptance bundle review","depends_on":["EXEC-09"],"human_level":"H2","artifact":"acceptance/ACCEPT-01-report.md"},
+    {"id":"ACCEPT-02","name":"Local installation","depends_on":["ACCEPT-01"],"human_level":"H3","artifact":"acceptance/ACCEPT-02-report.md"},
+    {"id":"ACCEPT-03","name":"Human functional QA","depends_on":["ACCEPT-02"],"human_level":"H3","artifact":"acceptance/ACCEPT-03-human-functional-qa.md"},
+    {"id":"ACCEPT-04","name":"Signoff or defect loop","depends_on":["ACCEPT-03"],"human_level":"H2","artifact":"acceptance/ACCEPT-04-signoff.md"}
+  ]
+}

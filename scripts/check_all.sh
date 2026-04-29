@@ -14,16 +14,14 @@ else
   echo "core routing tests skipped: non-Darwin environment"
 fi
 
-if [ "${CWR_RUN_XCTEST:-0}" = "1" ]; then
-  if [ "$(uname -s)" != "Darwin" ]; then
-    echo "swift test skipped: XCTest gate is intended for macOS CI"
-  elif ! command -v swift >/dev/null 2>&1; then
+if rg --files Sources Tests >/dev/null 2>&1; then
+  if ! command -v swift >/dev/null 2>&1; then
     echo "swift test skipped: swift not found"
   else
     swift test
   fi
 else
-  echo "swift test skipped: set CWR_RUN_XCTEST=1 to run SwiftPM/XCTest tests"
+  echo "swift test skipped: no Swift source/test files detected"
 fi
 
 echo "all checks: OK"

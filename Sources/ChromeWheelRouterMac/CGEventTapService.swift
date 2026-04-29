@@ -47,21 +47,45 @@ public final class CGEventTapService {
         return true
     }
 
-    public func run() { CFRunLoopRun() }
+    public func run() {
+        CFRunLoopRun()
+    }
 
     private func handleEvent(proxy: CGEventTapProxy, type: CGEventType, event: CGEvent) -> Unmanaged<CGEvent>? {
-        guard type == .scrollWheel else { return Unmanaged.passUnretained(event) }
-
         if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
-            if let tap = eventTap { CGEvent.tapEnable(tap: tap, enable: true) }
+            if let tap = eventTap {
+                CGEvent.tapEnable(tap: tap, enable: true)
+            }
+            return Unmanaged.passUnretained(event)
+        }
+
+        guard type == .scrollWheel else {
             return Unmanaged.passUnretained(event)
         }
 
         let frontmostBundleID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "unknown"
-        let model = ScrollEventAdapter.makeModel(event: event, frontmostBundleID: frontmostBundleID, routerEnabled: isEnabled())
+        let model = ScrollEventAdapter.makeModel(
+            event: event,
+            frontmostBundleID: frontmostBundleID,
+            routerEnabled: isEnabled()
+        )
         let decision = router.decide(model)
-        print("mode=\(mode.rawValue) app=\(frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) modifiers=\(model.modifiers) decision=\(decision)")
+
+        log(decision: decision, model: model)
+
+        // EXEC-03 safety invariant: return original event in all modes.
         return Unmanaged.passUnretained(event)
+    }
+
+    private func log(decision: RouteDecision, model: ScrollEventModel) {
+        switch mode {
+        case .listenOnly:
+            print("mode=listen-only observed app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) modifiers=\(model.modifiers) decision=\(decision)")
+        case .dryRun:
+            print("mode=dry-run classified app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) decision=\(decision) action=pass-through")
+        case .active:
+            print("mode=active classified app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) decision=\(decision) action=pass-through-exec-03")
+        }
     }
 }
 #else
@@ -69,7 +93,11 @@ import ChromeWheelRouterCore
 
 public final class CGEventTapService {
     public init(router: Router = Router(), mode: EventTapMode, isEnabled: @escaping () -> Bool = { true }) {}
-    public func start() -> Bool { false }
+
+    public func start() -> Bool {
+        false
+    }
+
     public func run() {}
 }
 #endif

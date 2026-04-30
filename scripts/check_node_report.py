@@ -50,7 +50,6 @@ SCOPE_CHANGE_PATHS = (
     "ChromeWheelRouter/docs/specs/scope.md",
     "ChromeWheelRouter/docs/specs/product_scope.md",
     "ChromeWheelRouter/docs/specs/product_decisions.md",
-    "agent_state_harness/current_state.json",
 )
 
 

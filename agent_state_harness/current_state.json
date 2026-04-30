@@ -5,6 +5,7 @@
     "in_scope": [
       "Chrome only",
       "Option-only + horizontal scroll => Chrome page zoom",
+      "Control-only + horizontal scroll => Chrome tab switching",
       "bare horizontal scroll pass-through so Logi Options+ can keep handling it",
       "safe macOS menu bar app",
       "automatic install package and user documentation as final deliverables"
@@ -31,6 +32,7 @@
     "uninstall documentation included",
     "security documentation included",
     "Chrome + Option + horizontal scroll zooms page on a real Mac",
+    "Chrome + Control + horizontal scroll switches tabs on a real Mac",
     "Chrome + bare horizontal scroll remains handled by Logi Options+ on a real Mac",
     "Disable and Quit restore baseline behavior",
     "uninstall removes app/config/logs and documents manual permission revocation"
@@ -44,7 +46,7 @@
     "no LaunchDaemon",
     "no driver or kernel/system extension",
     "unmatched events must return the original event",
-    "only Chrome + Option-only + horizontal scroll may be swallowed"
+    "only Chrome + Option-only + horizontal scroll or Chrome + Control-only + horizontal scroll may be swallowed"
   ],
   "backlog": [
     {
@@ -88,10 +90,11 @@
     "MX Master horizontal wheel on real Mac",
     "Logi Options+ coexistence with bare horizontal scroll",
     "Chrome zoom behavior",
+    "Chrome tab-switch behavior",
     "macOS Accessibility permission prompt",
     "macOS Input Monitoring permission prompt",
     "disable/quit/uninstall behavior"
   ],
-  "last_updated_by": "initial scaffold",
-  "last_updated_note": "Built project kickoff state based on user requirements."
+  "last_updated_by": "HARNESS-00",
+  "last_updated_note": "Reconciled current state with accepted two-gesture MVP: Option-only zoom and Control-only tab switching."
 }

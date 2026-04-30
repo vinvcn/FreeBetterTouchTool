@@ -42,6 +42,8 @@ def main() -> int:
             preflight_command(command)
 
         require_contains("scripts/check_all.sh", "python3 scripts/run_gate.py fast")
+        require_contains("harness/quality_gates.yml", "./scripts/check_swift_boundaries.sh")
+        require_contains("harness/quality_gates.yml", "./scripts/check_hot_path_safety.sh")
         require_contains(".github/workflows/ci.yml", "python3 scripts/run_gate.py integration")
         require_contains(".github/workflows/autopilot-gate.yml", "python3 scripts/run_gate.py integration")
     except AssertionError as exc:

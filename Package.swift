@@ -34,7 +34,7 @@ let package = Package(
         ),
         .executableTarget(
             name: "ChromeWheelRouterCLI",
-            dependencies: ["ChromeWheelRouterCore", "ChromeWheelRouterMac"]
+            dependencies: ["ChromeWheelRouterMac"]
         ),
         .executableTarget(
             name: "ChromeWheelRouterApp",

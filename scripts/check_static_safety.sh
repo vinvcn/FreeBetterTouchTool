@@ -12,14 +12,21 @@ fail() {
 SCAN_PATHS=(Sources Tests scripts)
 EXCLUDE_GLOBS=(
   "!scripts/check_static_safety.sh"
+  "!scripts/check_hot_path_safety.sh"
 )
 
 scan_forbidden() {
   local pattern="$1"
   local description="$2"
   local out
+  local rg_globs=()
+  local glob
 
-  if out=$(rg --line-number --hidden --glob "${EXCLUDE_GLOBS[0]}" -- "$pattern" "${SCAN_PATHS[@]}" 2>/dev/null); then
+  for glob in "${EXCLUDE_GLOBS[@]}"; do
+    rg_globs+=(--glob "$glob")
+  done
+
+  if out=$(rg --line-number --hidden "${rg_globs[@]}" -- "$pattern" "${SCAN_PATHS[@]}" 2>/dev/null); then
     if [[ -n "$out" ]]; then
       echo "$out" >&2
       fail "forbidden pattern found (${description}): ${pattern}"

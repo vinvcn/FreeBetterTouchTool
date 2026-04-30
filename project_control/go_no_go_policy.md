@@ -38,12 +38,13 @@
 每个 Codex PR 必须包含：
 
 - 对应 node report：`ChromeWheelRouter/docs/development/node_reports/EXEC-XX.md`
+- 结构化 node report evidence：fenced `json node-report` block matching `templates/node_report.schema.json`
 - 测试结果摘要
 - 改动范围摘要
 - 安全约束确认
 - 人类验证步骤
 
-没有 node report，不合并。
+没有 node report，或 node report 结构化 evidence gate 不通过，不合并。
 
 ## Scope Creep 拦截
 

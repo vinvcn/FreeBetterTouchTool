@@ -26,3 +26,17 @@ Low-touch mode:
 4. Owner only reviews failed gates and final RC.
 
 Do not use fully unattended release for v0.1.0. The app touches macOS input events; human local acceptance is mandatory.
+
+## Machine-checkable PR evidence
+
+Every Codex PR must add or update a node report under
+`ChromeWheelRouter/docs/development/node_reports/`. New reports must include a
+fenced `json node-report` evidence block matching
+`templates/node_report.schema.json`.
+
+The Autopilot Gate validates changed PR node reports with
+`scripts/check_node_report.py`. The gate fails when a PR has no node report, a
+report omits required evidence, required command results are missing, safety
+invariants are incomplete, changed files are not listed, manual-validation
+requirements are understated, or source-of-truth changes lack an explicit
+state/scope explanation.

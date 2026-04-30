@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChromeWheelRouter Node Report Evidence",
+  "type": "object",
+  "required": [
+    "node_id",
+    "task_source",
+    "changed_files",
+    "commands_run",
+    "safety_invariants_checked",
+    "scope_change",
+    "manual_validation_required",
+    "artifacts",
+    "known_risks",
+    "next_node",
+    "state_updates"
+  ],
+  "properties": {
+    "node_id": {"type": "string", "minLength": 1},
+    "task_source": {"type": "string", "minLength": 1},
+    "changed_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "commands_run": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["command", "result", "summary"],
+        "properties": {
+          "command": {"type": "string", "minLength": 1},
+          "result": {"type": "string", "minLength": 1},
+          "summary": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "safety_invariants_checked": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["invariant", "checked", "summary"],
+        "properties": {
+          "invariant": {"type": "string", "minLength": 1},
+          "checked": {"type": "boolean"},
+          "summary": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "scope_change": {
+      "type": "object",
+      "required": ["changed", "summary"],
+      "properties": {
+        "changed": {"type": "boolean"},
+        "summary": {"type": "string", "minLength": 1}
+      }
+    },
+    "manual_validation_required": {
+      "type": "object",
+      "required": ["required", "summary"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "summary": {"type": "string", "minLength": 1}
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "known_risks": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "next_node": {"type": "string", "minLength": 1},
+    "state_updates": {
+      "type": "object",
+      "required": ["current_state_json_changed", "summary"],
+      "properties": {
+        "current_state_json_changed": {"type": "boolean"},
+        "summary": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

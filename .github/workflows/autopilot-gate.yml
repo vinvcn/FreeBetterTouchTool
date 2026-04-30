@@ -10,6 +10,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Show environment
         run: |
           uname -a
@@ -17,11 +19,6 @@ jobs:
           python3 --version
       - name: Run integration gate
         run: python3 scripts/run_gate.py integration
-      - name: Ensure node report exists on PRs
+      - name: Validate node report evidence on PRs
         if: github.event_name == 'pull_request'
-        run: |
-          node_report_dir="ChromeWheelRouter/docs/development/node_reports"
-          if ! find "$node_report_dir" -maxdepth 1 -name 'EXEC-*.md' -type f | grep -q .; then
-            echo "Expected a node report under $node_report_dir/EXEC-*.md"
-            exit 1
-          fi
+        run: python3 scripts/check_node_report.py --base "origin/${{ github.base_ref }}" --head HEAD

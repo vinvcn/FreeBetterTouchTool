@@ -45,8 +45,10 @@ def main() -> int:
         require_contains("harness/quality_gates.yml", "./scripts/check_swift_boundaries.sh")
         require_contains("harness/quality_gates.yml", "./scripts/check_hot_path_safety.sh")
         require_contains("harness/quality_gates.yml", "./scripts/check_router_fixtures.sh")
+        require_contains("harness/quality_gates.yml", "python3 -S ./scripts/check_node_report.py --all")
         require_contains(".github/workflows/ci.yml", "python3 scripts/run_gate.py integration")
         require_contains(".github/workflows/autopilot-gate.yml", "python3 scripts/run_gate.py integration")
+        require_contains(".github/workflows/autopilot-gate.yml", "python3 scripts/check_node_report.py --base")
     except AssertionError as exc:
         print(f"harness consistency check failed: {exc}", file=sys.stderr)
         return 1

@@ -40,4 +40,9 @@ scan_forbidden '\\bsudo\\b|LaunchDaemon|/Library/LaunchDaemons|/Library/Privileg
 # 4) Chrome / Logi Options+ config touching
 scan_forbidden 'defaults[[:space:]]+write[[:space:]].*(com\\.google\\.Chrome|Logi)|PlistBuddy.*(Chrome|Logi)|/Google/Chrome/.*/(Preferences|Local State)|Logi Options\\+/.+\\.(json|plist)|sqlite3.*(Chrome|Logi)' 'Chrome/Logi config modification or access'
 
+# 5) hot path logging / disk IO regressions
+if rg --line-number -- 'logger|appendLog|FileHandle|FileManager|print\\(|fputs\\(' Sources/ChromeWheelRouterMac/CGEventTapService.swift 2>/dev/null; then
+  fail "event tap service must not log or perform file/stdout IO from the scroll callback hot path"
+fi
+
 echo "static safety checks: OK"

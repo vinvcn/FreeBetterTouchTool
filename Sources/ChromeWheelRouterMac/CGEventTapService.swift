@@ -12,9 +12,9 @@ public final class CGEventTapService {
     private let router: Router
     private let mode: EventTapMode
     private let isEnabled: () -> Bool
+    private let frontmostBundleID: () -> String
     private let keyboardInjector: KeyboardInjecting
     private let onTapDisabled: ((EventTapDisableReason) -> Void)?
-    private let logger: (String) -> Void
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
 
@@ -22,16 +22,18 @@ public final class CGEventTapService {
         router: Router = Router(),
         mode: EventTapMode,
         isEnabled: @escaping () -> Bool = { true },
+        frontmostBundleID: @escaping () -> String = {
+            NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "unknown"
+        },
         keyboardInjector: KeyboardInjecting = CGKeyboardInjector(),
-        onTapDisabled: ((EventTapDisableReason) -> Void)? = nil,
-        logger: @escaping (String) -> Void = { print($0) }
+        onTapDisabled: ((EventTapDisableReason) -> Void)? = nil
     ) {
         self.router = router
         self.mode = mode
         self.isEnabled = isEnabled
+        self.frontmostBundleID = frontmostBundleID
         self.keyboardInjector = keyboardInjector
         self.onTapDisabled = onTapDisabled
-        self.logger = logger
     }
 
     public func start() -> Bool {
@@ -100,16 +102,13 @@ public final class CGEventTapService {
             return Unmanaged.passUnretained(event)
         }
 
-        let frontmostBundleID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "unknown"
         let model = ScrollEventAdapter.makeModel(
             event: event,
-            frontmostBundleID: frontmostBundleID,
+            frontmostBundleID: frontmostBundleID(),
             routerEnabled: isEnabled()
         )
         let decision = router.decide(model)
         let action = EventAction.forMode(mode, decision: decision)
-
-        log(decision: decision, model: model, action: action)
 
         guard action == .injectAndSwallow else {
             return Unmanaged.passUnretained(event)
@@ -131,10 +130,6 @@ public final class CGEventTapService {
 
         return injected ? nil : Unmanaged.passUnretained(event)
     }
-
-    private func log(decision: RouteDecision, model: ScrollEventModel, action: EventAction) {
-        logger("mode=\(mode.rawValue) app=\(model.frontmostBundleID) dx=\(model.horizontalDelta) dy=\(model.verticalDelta) decision=\(decision) action=\(action)")
-    }
 }
 #else
 import ChromeWheelRouterCore
@@ -149,9 +144,9 @@ public final class CGEventTapService {
         router: Router = Router(),
         mode: EventTapMode,
         isEnabled: @escaping () -> Bool = { true },
+        frontmostBundleID: @escaping () -> String = { "unknown" },
         keyboardInjector: KeyboardInjecting = CGKeyboardInjector(),
-        onTapDisabled: ((EventTapDisableReason) -> Void)? = nil,
-        logger: @escaping (String) -> Void = { _ in }
+        onTapDisabled: ((EventTapDisableReason) -> Void)? = nil
     ) {}
 
     public func start() -> Bool {

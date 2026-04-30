@@ -40,6 +40,14 @@ The event callback must not perform:
 - blocking waits
 - package installation
 - config mutation
+- per-event logging
+- repeated workspace/process lookups when equivalent state can be cached outside the callback
+
+## Long-running runtime constraints
+
+- Runtime polling must not restart, recreate, or re-enable event taps unless the desired running state or mode changed.
+- Permission/status checks must stay outside the scroll event callback.
+- Diagnostics for scroll events must be sampled, aggregated, or moved off the event tap hot path.
 
 ## Installation constraints
 

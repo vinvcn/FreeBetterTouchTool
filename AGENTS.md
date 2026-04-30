@@ -55,6 +55,9 @@ These rules are non-negotiable.
 28. Event tap callbacks must not take blocking locks.
 29. If permissions are missing, fail closed: do not create the event tap.
 30. If runtime state is uncertain, fail open: pass events through.
+31. Event tap callbacks must stay allocation-light and must not perform per-event logging.
+32. Long-running runtime polling must not recreate event taps unless the desired running state or mode changed.
+33. Frontmost-app state should be cached outside the event tap callback when practical; do not add repeated workspace/process lookups to the hot path without a documented reason.
 
 ## Target implementation shape
 

@@ -27,6 +27,9 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     private var userEnabled = false
     private var dryRunEnabled = false
     private var tapService: CGEventTapService?
+    private var currentTapMode: EventTapMode?
+    private var cachedFrontmostBundleID: String = "unknown"
+    private var frontmostApplicationObserver: NSObjectProtocol?
     private var statusPollTimer: Timer?
     private var startupHeartbeatTimer: Timer?
 
@@ -47,6 +50,7 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         ensureAppSupportDirectory()
         appendLog("Application launched. bundlePath=\(Bundle.main.bundlePath)")
+        startFrontmostApplicationCache()
         buildMenuBarUI()
         appendLog("Status item created.")
         startStatusPolling()
@@ -59,6 +63,10 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         statusPollTimer = nil
         startupHeartbeatTimer?.invalidate()
         startupHeartbeatTimer = nil
+        if let frontmostApplicationObserver {
+            NSWorkspace.shared.notificationCenter.removeObserver(frontmostApplicationObserver)
+        }
+        frontmostApplicationObserver = nil
         stopTapService()
     }
 
@@ -233,6 +241,24 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         AXIsProcessTrusted() && CGPreflightListenEventAccess()
     }
 
+    private func startFrontmostApplicationCache() {
+        cachedFrontmostBundleID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "unknown"
+        frontmostApplicationObserver = NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didActivateApplicationNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard
+                let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+                let bundleIdentifier = app.bundleIdentifier
+            else {
+                self?.cachedFrontmostBundleID = "unknown"
+                return
+            }
+            self?.cachedFrontmostBundleID = bundleIdentifier
+        }
+    }
+
     private func reconcileRuntime() {
         if killSwitchPresent() {
             if userEnabled {
@@ -246,7 +272,7 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
 
         if shouldRun {
             let mode: EventTapMode = dryRunEnabled ? .dryRun : .active
-            restartTapService(mode: mode)
+            startTapServiceIfNeeded(mode: mode)
         } else {
             stopTapService()
         }
@@ -254,23 +280,27 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
         refreshMenuState(hasPermissions: hasPermissions, running: shouldRun)
     }
 
-    private func restartTapService(mode: EventTapMode) {
+    private func startTapServiceIfNeeded(mode: EventTapMode) {
+        if tapService != nil && currentTapMode == mode {
+            return
+        }
+
         stopTapService()
         let service = CGEventTapService(
             mode: mode,
             isEnabled: { [weak self] in self?.userEnabled == true },
+            frontmostBundleID: { [weak self] in self?.cachedFrontmostBundleID ?? "unknown" },
             onTapDisabled: { [weak self] reason in
                 self?.appendLog("Event tap temporarily disabled: \(reason).")
-            },
-            logger: { [weak self] line in
-                self?.appendLog(line)
             }
         )
         if service.start() {
             tapService = service
+            currentTapMode = mode
             appendLog("Event tap started in mode=\(mode.rawValue).")
         } else {
             tapService = nil
+            currentTapMode = nil
             userEnabled = false
             appendLog("Failed to start event tap. Disabling app.")
         }
@@ -282,6 +312,7 @@ final class ChromeWheelRouterApp: NSObject, NSApplicationDelegate {
             appendLog("Event tap stopped.")
         }
         tapService = nil
+        currentTapMode = nil
     }
 
     private func refreshMenuState(hasPermissions: Bool, running: Bool) {

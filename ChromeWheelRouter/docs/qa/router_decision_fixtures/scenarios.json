@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "ROUTE-001",
+      "name": "Chrome bare horizontal scroll passes through",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": [],
+        "routerEnabled": true
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-002",
+      "name": "Non-Chrome Option horizontal scroll passes through",
+      "input": {
+        "frontmostBundleID": "com.apple.finder",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["option"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-003",
+      "name": "Chrome vertical-only Option scroll passes through",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 0,
+        "verticalDelta": 1,
+        "modifiers": ["option"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-004",
+      "name": "Chrome diagonal Option scroll passes through",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 1,
+        "modifiers": ["option"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-005",
+      "name": "Chrome Command horizontal scroll passes through",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["command"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-006",
+      "name": "Chrome Shift horizontal scroll passes through",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["shift"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-007",
+      "name": "Chrome Option Command horizontal scroll passes through",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["option", "command"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-008",
+      "name": "Chrome Control Option horizontal scroll passes through",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["control", "option"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-009",
+      "name": "Disabled router passes matched Option scroll through",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["option"],
+        "routerEnabled": false
+      },
+      "expectedDecision": "passThrough"
+    },
+    {
+      "id": "ROUTE-010",
+      "name": "Chrome Option positive horizontal scroll zooms in and swallows",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["option"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "zoomInAndSwallow"
+    },
+    {
+      "id": "ROUTE-011",
+      "name": "Chrome Option negative horizontal scroll zooms out and swallows",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": -1,
+        "verticalDelta": 0,
+        "modifiers": ["option"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "zoomOutAndSwallow"
+    },
+    {
+      "id": "ROUTE-012",
+      "name": "Chrome Control positive horizontal scroll switches to next tab and swallows",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["control"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "nextTabAndSwallow"
+    },
+    {
+      "id": "ROUTE-013",
+      "name": "Chrome Control negative horizontal scroll switches to previous tab and swallows",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome",
+        "horizontalDelta": -1,
+        "verticalDelta": 0,
+        "modifiers": ["control"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "previousTabAndSwallow"
+    },
+    {
+      "id": "ROUTE-014",
+      "name": "Chrome Canary Option horizontal scroll uses Chrome routing",
+      "input": {
+        "frontmostBundleID": "com.google.Chrome.canary",
+        "horizontalDelta": 1,
+        "verticalDelta": 0,
+        "modifiers": ["option"],
+        "routerEnabled": true
+      },
+      "expectedDecision": "zoomInAndSwallow"
+    }
+  ]
+}

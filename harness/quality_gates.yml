@@ -8,6 +8,7 @@ gates:
       - "python3 -S ChromeWheelRouter/docs/qa/mvp_user_flow_harness/scripts/check_user_flows.py"
       - "./scripts/check_static_safety.sh"
       - "./scripts/run_core_routing_tests.sh"
+      - "./scripts/check_router_fixtures.sh"
       - "./scripts/check_swift_boundaries.sh"
       - "./scripts/check_hot_path_safety.sh"
       - "python3 -S ./scripts/check_harness_consistency.py"

@@ -29,6 +29,18 @@ ChromeWheelRouter.app
     └── uninstall script / guide
 ```
 
+## Source Boundaries
+
+Core routing must be pure Swift and unit-testable.
+
+```text
+Sources/ChromeWheelRouterCore
+Sources/ChromeWheelRouterMac
+Sources/ChromeWheelRouterApp
+```
+
+Core logic must not import AppKit or CoreGraphics unless absolutely necessary. The macOS adapter translates `CGEvent` into the pure core model before calling routing logic.
+
 ## Current scaffold
 
 The current repo includes only the safe core layer and harnesses. The actual `CGEventTap` adapter is intentionally not implemented in the scaffold.

@@ -15,4 +15,12 @@ Use project memory to capture decisions, lessons, and execution summaries so fut
 
 ## Usage guidance
 
-When task work creates new knowledge, update the relevant files in this tree and any related docs (`ChromeWheelRouter/docs/development/node_reports`, `ChromeWheelRouter/docs/product/TROUBLESHOOTING.md`) as directed by `AGENTS.md`.
+When task work creates new knowledge, update the relevant files in this tree and any related docs:
+
+- `ChromeWheelRouter/docs/development/node_reports/EXEC-XX.md`
+- `ChromeWheelRouter/docs/development/project_memory/node_summaries/EXEC-XX.md`
+- `ChromeWheelRouter/docs/development/project_memory/lessons_learned/*.md`
+- `ChromeWheelRouter/docs/development/project_memory/decisions/ADR-*.md`
+- `ChromeWheelRouter/docs/product/TROUBLESHOOTING.md`
+
+If a bug, toolchain issue, compatibility issue, or safety edge case is discovered, record it in `lessons_learned/`. If a durable architectural decision is made, record it as an ADR in `decisions/`.

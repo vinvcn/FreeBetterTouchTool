@@ -41,7 +41,7 @@ scrollWheel event
 → ScrollEventModel
 → Router.decide
 → passThrough: return original event
-→ zoom action: inject Chrome shortcut and swallow original event
+→ zoom/tab action: inject Chrome shortcut and swallow original event
 ```
 
 ## Fail-open rule

@@ -27,7 +27,7 @@
 - 产品：`ChromeWheelRouter`
 - 平台：macOS
 - 形态：菜单栏 App，后续可打包为 DMG
-- MVP：Chrome 中 `Option + 水平滚轮` 控制页面 zoom
+- MVP：Chrome 中 `Option + 水平滚轮` 控制页面 zoom，`Control + 水平滚轮` 切换标签页
 - 非目标：不做 BetterTouchTool 复刻，不做无影云电脑，不做全局鼠标系统
 - 安全边界：不监听 keyDown/keyUp，不联网，不改 Chrome/Logi/macOS 配置
 
@@ -85,6 +85,7 @@
 - `ChromeWheelRouterCore` 完整 routing model
 - 方向、modifier、Chrome bundle id、disabled mode 的单元测试
 - 回归测试：`Chrome + no modifier + horizontal scroll = passThrough`
+- 回归测试：`Chrome + Option+Control + horizontal scroll = passThrough`
 
 **自动 gate**：
 
@@ -134,7 +135,7 @@
 
 ## EXEC-04 — Chrome Zoom Injection / Chrome 缩放注入
 
-**目标**：让匹配事件真实触发 Chrome 页面 zoom。
+**目标**：让匹配事件真实触发 Chrome 页面 zoom 或标签页切换。
 
 **Codex 输入**：`ChromeWheelRouter/docs/development/codex_tasks/execution/EXEC-04-chrome-zoom-injection.md`
 
@@ -143,6 +144,8 @@
 - `KeyboardInjector`
 - zoom in: `Cmd + =`
 - zoom out: `Cmd + -`
+- next tab: `Control + Tab`
+- previous tab: `Control + Shift + Tab`
 - 匹配事件 `return nil`
 - 非匹配事件 `return original event`
 
@@ -150,11 +153,12 @@
 
 - routing tests 全通过
 - static safety 全通过
-- injection path 只包含 zoom 两个快捷键
+- injection path 只包含 zoom 和 tab-switch 四个快捷键
 
 **人类 gate**：
 
 - Chrome + Option + 水平滚轮缩放
+- Chrome + Control + 水平滚轮切换标签页
 - Chrome + 裸水平滚轮仍按 Logi 原行为
 - 非 Chrome 无影响
 
@@ -379,6 +383,7 @@
 
 - Chrome 裸水平滚轮：仍由 Logi Options+ 处理
 - Chrome + Option + 水平滚轮：页面 zoom
+- Chrome + Control + 水平滚轮：切换标签页
 - 非 Chrome：无影响
 - Disable：全部恢复 pass-through
 - Quit：全部恢复原状
@@ -442,4 +447,3 @@
 - release notes
 - checksums
 - rollback
-

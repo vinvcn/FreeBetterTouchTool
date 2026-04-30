@@ -33,7 +33,7 @@ Your required decisions are:
 
 ## Safety invariant
 
-The tool must remain a Chrome-only, Option-horizontal-scroll-only router until you explicitly change the project scope.
+The tool must remain a Chrome-only router that swallows only Option-only horizontal scroll for page zoom and Control-only horizontal scroll for tab switching until you explicitly change the project scope.
 
 
 ## Merged addenda

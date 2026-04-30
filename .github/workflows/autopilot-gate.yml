@@ -15,14 +15,8 @@ jobs:
           uname -a
           swift --version || true
           python3 --version
-      - name: Run project checks
-        run: |
-          if [ -x ./scripts/check_all.sh ]; then
-            CWR_RUN_XCTEST=1 ./scripts/check_all.sh
-          else
-            echo "No check_all.sh found"
-            exit 1
-          fi
+      - name: Run integration gate
+        run: python3 scripts/run_gate.py integration
       - name: Ensure node report exists on PRs
         if: github.event_name == 'pull_request'
         run: |

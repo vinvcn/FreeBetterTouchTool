@@ -63,8 +63,16 @@ See [`ChromeWheelRouter/docs/README.md`](ChromeWheelRouter/docs/README.md) for t
 ## Local checks
 
 ```bash
+python3 scripts/run_gate.py fast
 ./scripts/check_all.sh
 ```
+
+Quality gates are defined in [`harness/quality_gates.yml`](harness/quality_gates.yml):
+
+- `fast`: run before every agent handoff and local PR draft.
+- `integration`: run in CI and before merge.
+- `release`: run before RC/release artifact creation.
+- `manual`: human validation required on a real Mac with Chrome, MX Master hardware, Logi Options+, and macOS privacy permissions.
 
 ## Current status
 

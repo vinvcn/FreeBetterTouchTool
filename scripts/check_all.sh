@@ -4,15 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-python3 -S agent_state_harness/scripts/check_state.py
-python3 -S ChromeWheelRouter/docs/qa/mvp_user_flow_harness/scripts/check_user_flows.py
-./scripts/check_static_safety.sh
-
-if [ "$(uname -s)" = "Darwin" ]; then
-  ./scripts/run_core_routing_tests.sh
-else
-  echo "core routing tests skipped: non-Darwin environment"
-fi
+python3 scripts/run_gate.py fast
 
 run_xtest="${CWR_RUN_XCTEST:-0}"
 has_swift_package=0

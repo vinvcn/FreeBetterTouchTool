@@ -1,0 +1,37 @@
+version: 1
+
+gates:
+  fast:
+    purpose: "Run before every agent handoff and local PR draft."
+    commands:
+      - "python3 -S agent_state_harness/scripts/check_state.py"
+      - "python3 -S ChromeWheelRouter/docs/qa/mvp_user_flow_harness/scripts/check_user_flows.py"
+      - "./scripts/check_static_safety.sh"
+      - "./scripts/run_core_routing_tests.sh"
+      - "./scripts/check_swift_boundaries.sh"
+      - "python3 -S ./scripts/check_harness_consistency.py"
+
+  integration:
+    purpose: "Run in CI and before merge."
+    commands:
+      - "CWR_RUN_XCTEST=1 ./scripts/check_all.sh"
+      - "swift build -c release"
+
+  release:
+    purpose: "Run before RC/release artifact creation."
+    commands:
+      - "./scripts/package_rc.sh"
+    required_artifacts:
+      - "dist/SHA256SUMS"
+      - "dist/build_manifest.json"
+      - "dist/test_report.txt"
+      - "dist/static_safety_report.txt"
+
+manual:
+  required:
+    - "Chrome bare horizontal scroll remains pass-through"
+    - "Chrome Option horizontal scroll performs zoom"
+    - "Chrome Control horizontal scroll switches tabs"
+    - "Disable restores pass-through"
+    - "Quit restores pass-through"
+    - "Uninstall removes files and documents permission revocation"

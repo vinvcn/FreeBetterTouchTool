@@ -1,12 +1,48 @@
+import AppKit
 import Foundation
-import ChromeWheelRouterCore
 import ChromeWheelRouterMac
 
+final class FrontmostApplicationCache {
+    private var cachedBundleID: String
+    private var observer: NSObjectProtocol?
+
+    init() {
+        cachedBundleID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "unknown"
+        observer = NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didActivateApplicationNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard
+                let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+                let bundleIdentifier = app.bundleIdentifier
+            else {
+                self?.cachedBundleID = "unknown"
+                return
+            }
+            self?.cachedBundleID = bundleIdentifier
+        }
+    }
+
+    deinit {
+        if let observer {
+            NSWorkspace.shared.notificationCenter.removeObserver(observer)
+        }
+    }
+
+    func currentBundleID() -> String {
+        cachedBundleID
+    }
+}
 
 struct CLI {
     static func run(arguments: [String]) throws {
         let mode = try parseMode(arguments: arguments)
-        let service = CGEventTapService(mode: mode)
+        let frontmostApplicationCache = FrontmostApplicationCache()
+        let service = CGEventTapService(
+            mode: mode,
+            frontmostBundleID: { frontmostApplicationCache.currentBundleID() }
+        )
 
         guard service.start() else {
             fputs("Failed to create scrollWheel-only event tap. Check macOS privacy permissions.\n", stderr)

@@ -22,9 +22,7 @@ public final class CGEventTapService {
         router: Router = Router(),
         mode: EventTapMode,
         isEnabled: @escaping () -> Bool = { true },
-        frontmostBundleID: @escaping () -> String = {
-            NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "unknown"
-        },
+        frontmostBundleID: @escaping () -> String = { "unknown" },
         keyboardInjector: KeyboardInjecting = CGKeyboardInjector(),
         onTapDisabled: ((EventTapDisableReason) -> Void)? = nil
     ) {
@@ -91,9 +89,9 @@ public final class CGEventTapService {
             }
 
             if type == .tapDisabledByTimeout {
-                onTapDisabled?(.timeout)
+                notifyTapDisabled(.timeout)
             } else {
-                onTapDisabled?(.userInput)
+                notifyTapDisabled(.userInput)
             }
             return Unmanaged.passUnretained(event)
         }
@@ -129,6 +127,16 @@ public final class CGEventTapService {
         }
 
         return injected ? nil : Unmanaged.passUnretained(event)
+    }
+
+    private func notifyTapDisabled(_ reason: EventTapDisableReason) {
+        guard let onTapDisabled else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            onTapDisabled(reason)
+        }
     }
 }
 #else

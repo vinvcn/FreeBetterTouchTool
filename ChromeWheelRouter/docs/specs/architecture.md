@@ -37,9 +37,14 @@ Core routing must be pure Swift and unit-testable.
 Sources/ChromeWheelRouterCore
 Sources/ChromeWheelRouterMac
 Sources/ChromeWheelRouterApp
+Sources/ChromeWheelRouterCLI
 ```
 
-Core logic must not import AppKit or CoreGraphics unless absolutely necessary. The macOS adapter translates `CGEvent` into the pure core model before calling routing logic.
+Core logic must not import AppKit, CoreGraphics, or ApplicationServices. The macOS adapter translates `CGEvent` into the pure core model before calling routing logic.
+
+`ChromeWheelRouterMac` owns raw event tap APIs, `CGEvent` conversion, and Chrome shortcut injection. `ChromeWheelRouterApp` owns menu bar UI, permissions, logs, and long-running runtime state; it must pass cached state into the Mac adapter instead of creating event taps or parsing `CGEvent` directly. `ChromeWheelRouterCLI` may host a small runtime shell, but it must delegate event handling and route decisions to Core/Mac rather than reimplement routing rules.
+
+The event tap hot path must receive cached frontmost-app state. Direct `NSWorkspace.shared.frontmostApplication` lookups belong outside the callback path, such as startup initialization or workspace activation notifications.
 
 ## Current scaffold
 

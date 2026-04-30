@@ -9,6 +9,7 @@ gates:
       - "./scripts/check_static_safety.sh"
       - "./scripts/run_core_routing_tests.sh"
       - "./scripts/check_swift_boundaries.sh"
+      - "./scripts/check_hot_path_safety.sh"
       - "python3 -S ./scripts/check_harness_consistency.py"
 
   integration:

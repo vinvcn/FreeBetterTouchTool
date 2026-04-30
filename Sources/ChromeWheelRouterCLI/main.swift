@@ -1,3 +1,4 @@
+#if canImport(AppKit)
 import AppKit
 import Foundation
 import ChromeWheelRouterMac
@@ -85,3 +86,9 @@ struct CLI {
 }
 
 try CLI.run(arguments: CommandLine.arguments.dropFirst().map { $0 })
+
+#else
+import Foundation
+fputs("ChromeWheelRouterCLI requires macOS (AppKit).\n", stderr)
+Foundation.exit(1)
+#endif

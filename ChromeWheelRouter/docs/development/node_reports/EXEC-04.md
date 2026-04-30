@@ -1,16 +1,18 @@
-# EXEC-04 Node Report — Chrome Zoom Injection
+# EXEC-04 Node Report — Chrome Shortcut Injection
 
 Date: 2026-04-29
 Branch: codex/exec-04
 
 ## Scope
-Implemented real zoom injection for the CLI spike with strict mode safety:
+Implemented real Chrome shortcut injection for the CLI spike with strict mode safety:
 - added `KeyboardInjecting` abstraction and `CGKeyboardInjector` implementation for:
   - Command + `=` (zoom in)
   - Command + `-` (zoom out)
+  - Control + `Tab` (next tab)
+  - Control + Shift + `Tab` (previous tab)
 - wired router decisions into event tap handling
 - implemented active mode behavior:
-  - only `zoomInAndSwallow` / `zoomOutAndSwallow` decisions attempt injection
+  - only matched zoom or tab-switch decisions attempt injection
   - matching events return `nil` only when injection succeeds
 - ensured `listen-only` and `dry-run` never swallow and never inject
 - extracted mode/decision action policy into `EventAction`
@@ -27,7 +29,7 @@ Implemented real zoom injection for the CLI spike with strict mode safety:
 ## Safety Confirmation
 - event tap mask remains `scrollWheel`-only
 - unmatched events return original event
-- only Chrome + Option-only + horizontal scroll routes to swallow path (in active mode)
+- only Chrome + Option-only + horizontal scroll or Chrome + Control-only + horizontal scroll routes to the swallow path (in active mode)
 - listen-only and dry-run always pass through
 - no keyDown/keyUp event taps were added
 
@@ -48,7 +50,8 @@ swift run ChromeWheelRouterCLI --active
    - non-Chrome app
    - vertical scroll
    - no modifier
-   - Command/Shift/Control
+  - Command/Shift
+  - Option+Control
    - Option+Command
 4. Verify dry run never injects or swallows:
 
@@ -69,11 +72,17 @@ Reported by owner on 2026-04-29: the required routing safety matrix passed on re
 - Chrome + horizontal scroll + no modifier => pass-through
 - Chrome + horizontal scroll + Command => pass-through
 - Chrome + horizontal scroll + Shift => pass-through
-- Chrome + horizontal scroll + Control => pass-through
+- Chrome + horizontal scroll + Control-only + positive dx => next tab and swallow
+- Chrome + horizontal scroll + Control-only + negative dx => previous tab and swallow
 - Chrome + horizontal scroll + Option+Command => pass-through
+- Chrome + horizontal scroll + Option+Control => pass-through
 - Chrome + horizontal scroll + Option-only + positive dx => zoom-in and swallow
 - Chrome + horizontal scroll + Option-only + negative dx => zoom-out and swallow
 - disabled router => pass-through
+
+## HARNESS-00 Scope Reconciliation
+
+On 2026-04-30, HARNESS-00 reconciled the project source of truth with ADR-002 and the current router implementation. The current MVP also allows Chrome + Control-only + horizontal scroll to switch tabs and swallow after successful injection. Bare horizontal scroll and mixed modifiers remain pass-through.
 
 ## Next Node
 Next node: **EXEC-05**.

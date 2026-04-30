@@ -26,7 +26,7 @@ REQUIRED_SAFETY = [
     "no network APIs",
     "no root install",
     "unmatched events must return the original event",
-    "only Chrome + Option-only + horizontal scroll may be swallowed",
+    "only Chrome + Option-only + horizontal scroll or Chrome + Control-only + horizontal scroll may be swallowed",
 ]
 
 

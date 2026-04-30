@@ -61,7 +61,7 @@ Allowed inside callback:
 - inspect modifiers
 - read cached enabled/config state
 - call routing logic
-- post Chrome zoom shortcut
+- post Chrome zoom or tab-switch shortcut for an exact matched route
 - return event or nil
 
 ## Security posture

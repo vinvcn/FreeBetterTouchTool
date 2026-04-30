@@ -25,6 +25,8 @@ Required model:
   - `passThrough`
   - `zoomInAndSwallow`
   - `zoomOutAndSwallow`
+  - `nextTabAndSwallow`
+  - `previousTabAndSwallow`
 
 Rules:
 
@@ -33,9 +35,10 @@ Rules:
   - `com.google.Chrome.beta`
   - `com.google.Chrome.canary`
   - `com.google.Chrome.dev`
-- Only horizontal scroll with Option-only modifier matches.
+- Only horizontal scroll with Option-only modifier maps to zoom.
+- Only horizontal scroll with Control-only modifier maps to tab switching.
 - `Chrome + no modifier + horizontal scroll` must be `passThrough`.
-- Any Command/Control/Shift combination must be `passThrough`.
+- Command, Shift, and mixed modifier combinations must be `passThrough`.
 - Non-Chrome must be `passThrough`.
 - Disabled router must be `passThrough`.
 

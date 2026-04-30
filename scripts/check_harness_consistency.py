@@ -38,8 +38,8 @@ def main() -> int:
             commands = gate.get("commands", [])
             if not commands:
                 raise AssertionError(f"harness/quality_gates.yml gate has no commands: {gate_name}")
-            for command in commands:
-                preflight_command(command)
+        for command in manifest["gates"]["fast"].get("commands", []):
+            preflight_command(command)
 
         require_contains("scripts/check_all.sh", "python3 scripts/run_gate.py fast")
         require_contains(".github/workflows/ci.yml", "python3 scripts/run_gate.py integration")

@@ -126,9 +126,12 @@ def preflight_command(command: str) -> None:
 
 
 def run_gate(name: str, manifest: dict) -> int:
+    if name == "manual":
+        return run_manual_gate(manifest)
+
     gates = manifest["gates"]
     if name not in gates:
-        available = ", ".join(sorted(gates))
+        available = ", ".join(sorted([*gates, "manual"]))
         print(f"unknown quality gate: {name}", file=sys.stderr)
         print(f"available gates: {available}", file=sys.stderr)
         return 2
@@ -166,6 +169,20 @@ def run_gate(name: str, manifest: dict) -> int:
         return 1
 
     print(f"quality gate {name}: OK")
+    return 0
+
+
+def run_manual_gate(manifest: dict) -> int:
+    required = manifest.get("manual", {}).get("required", [])
+    if not isinstance(required, list) or not required:
+        print("quality gate manifest error: manual gate has no required checks", file=sys.stderr)
+        return 2
+
+    print("quality gate: manual")
+    print("required human validation:")
+    for item in required:
+        print(f"- {item}")
+    print("quality gate manual: listed")
     return 0
 
 
